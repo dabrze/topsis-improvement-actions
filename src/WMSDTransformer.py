@@ -1,4 +1,5 @@
 import math
+import time
 from abc import ABC, abstractmethod
 import numba
 import numpy as np
@@ -11,6 +12,8 @@ from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.operators.crossover.sbx import SBX
 from pymoo.operators.mutation.pm import PM
 from pymoo.optimize import minimize
+from pymoo.core.callback import Callback
+from tqdm import tqdm
 from joblib import Parallel, delayed
 from utils.population_reduction import reduce_population_agglomerative_clustering
 from utils.single_criterion_exact_improvement import solve_quadratic_equation, choose_appropriate_solution
@@ -1423,12 +1426,12 @@ class TOPSISAggregationFunction(ABC):
                 value_range = self.wmsd_transformer._value_range
                 performance_modifications = current_performances - initial_performances
                 for j in range(len(performance_modifications)):
-                    if performance_modifications[j] == 0:
+                    if performance_modifications.iloc[j] == 0:
                         continue
                     elif self.wmsd_transformer.objectives[j] == "max":
-                        performance_modifications[j] = value_range[j] * performance_modifications[j]
+                        performance_modifications.iloc[j] = value_range[j] * performance_modifications.iloc[j]
                     else:
-                        performance_modifications[j] = -value_range[j] * performance_modifications[j]
+                        performance_modifications.iloc[j] = -value_range[j] * performance_modifications.iloc[j]
                 result_df = performance_modifications.to_frame().transpose()
                 result_df = result_df.reset_index(drop=True)
                 return result_df
@@ -1445,8 +1448,9 @@ class TOPSISAggregationFunction(ABC):
         allow_deterioration=False,
         popsize=None,
         n_generations=200,
+        save_checkpoints=False,
     ):
-        """ Use genetic algorithm to create propositions of changes to 
+        """ Use genetic algorithm to create propositions of changes to
         let the chosen alternative achieve the target position.
         Parameters
         ----------
@@ -1479,6 +1483,7 @@ class TOPSISAggregationFunction(ABC):
         boundary_values = self.__check_boundary_values(
             alternative_to_improve, features_to_change, boundary_values
         )
+        # TODO check if criteria names are correct (I misspelled once)
 
         current_performances_US = (
             alternative_to_improve.drop(labels=["Mean", "Std", str(self.letter)])
@@ -1511,8 +1516,8 @@ class TOPSISAggregationFunction(ABC):
         )
 
         if popsize is None:
-            popsize_by_n_objectives = {2: 150, 3: 500, 4: 1000}
-            popsize = popsize_by_n_objectives.get(len(features_to_change), 2000)
+            popsize_by_n_objectives = {2: 200, 3: 1000, 4: 2000}
+            popsize = popsize_by_n_objectives.get(len(features_to_change), 5000)
 
         algorithm = NSGA2(
             pop_size=popsize,
@@ -1521,13 +1526,40 @@ class TOPSISAggregationFunction(ABC):
             save_history=False,
         )
 
-        res = minimize(
-            problem,
-            algorithm,
-            termination=("n_gen", n_generations),
-            seed=42,
-            verbose=False,
-        )
+
+        if save_checkpoints:
+            my_callback = MyProgressBar(n_generations, ' '.join(features_to_change))
+            res = minimize(
+                problem,
+                algorithm,
+                termination=('n_gen', n_generations),
+                callback=my_callback,
+                seed=42,
+                verbose=False,
+            )
+            print("Genetic algorithm execution time", res.exec_time)
+
+            checkpoints = my_callback.checkpoints
+            checkpoints[f"gen_{n_generations}_final"] = {
+                "problem": res.problem,
+                "exec_time": res.exec_time,
+                "CV": res.CV,
+                "F": res.F,
+                "G": res.G,
+                "X": res.X
+            }
+            result_path = f"checkpoints_popsize_{popsize}_n_gen_{n_generations}_{time.strftime("%Y_%m_%d_%H_%M_%S")}.pickle"
+            print("Saving genetic algorithm checkpoints to:", result_path)
+            pd.to_pickle(checkpoints, result_path)
+        else:
+            res = minimize(
+                problem,
+                algorithm,
+                termination=('n_gen', n_generations),
+                seed=42,
+                verbose=False,
+            )
+            checkpoints = None
 
         if res.F is not None:
             improvement_actions = np.zeros(
@@ -1543,9 +1575,36 @@ class TOPSISAggregationFunction(ABC):
             return pd.DataFrame(
                 sorted(improvement_actions.tolist(), key=lambda x: x[0]),
                 columns=self.wmsd_transformer.X.columns,
-            )
+            ), checkpoints
         else:
-            return None
+            return None, None
+
+
+class TqdmProgressBar(tqdm):
+    def update_to(self, current, total):
+        self.total = total
+        self.update(current - self.n)
+
+
+class MyProgressBar(Callback):
+    def __init__(self, n_gen, subset_str) -> None:
+        super().__init__()
+        self.progress_bar = TqdmProgressBar()
+        self.progress_bar.set_description(f"{subset_str}")
+        self.n_gen = n_gen
+        # self.checkpoint_every = self.n_gen // 20 if self.n_gen >= 40 else 2
+        self.checkpoint_every = 1
+        self.checkpoints = {}
+
+    def notify(self, algorithm):
+        if algorithm.n_iter % self.checkpoint_every == 1 or self.checkpoint_every == 1:
+            self.checkpoints[f"gen_{algorithm.n_gen}_checkpoint"] = {
+                "CV": algorithm.opt.get("CV"),
+                "F": algorithm.opt.get("F"),
+                "G": algorithm.opt.get("G"),
+                "X": algorithm.opt.get("X")
+            }
+        self.progress_bar.update_to(algorithm.n_iter, self.n_gen)
 
 
 class PostFactumTopsisPymoo(Problem):
@@ -1560,7 +1619,7 @@ class PostFactumTopsisPymoo(Problem):
     modified_criteria_subset : numpy array of bools
         Used to slice numpy arrays.
     current_performances : object
-        TODO description
+        Current performances of alternative in US (utility space)
     target_agg_value : object
         TODO description
     upper_bounds : 2D array of floats
