@@ -1,4 +1,4 @@
-This repository contains the Python implementation of the Post-Factum Analysis (PFA) framework for TOPSIS, as described in the paper *"Reaching the Top: A Comprehensive Framework for Post-Factum Analysis in TOPSIS."*  It provides tools to identify how to modify alternatives to improve their TOPSIS ranking. Specifically, the library offers five main post-factum analysis methods:
+This repository contains the Python implementation of the post-factum analysis (PFA) framework for TOPSIS, as described in the paper *"Reaching the Top: A Comprehensive Framework for Post-Factum Analysis in TOPSIS."*  It provides tools to identify how to modify alternatives to improve their TOPSIS ranking. Specifically, the library offers five main post-factum analysis methods:
 *   Direct method (single-criterion modification)
 *   Lexicographic binary search
 *   Non-linear programming
@@ -8,9 +8,7 @@ This repository contains the Python implementation of the Post-Factum Analysis (
 
 # Table of contents
 - [Multiple criteria ranking using TOPSIS](#multiple-criteria-ranking-based-on-topsis-method)
-  - [TOPSIS method](#topsis-method)
-  - [Illustrative example](#illustrative-example)
-- [Post-Factum Analysis TOPSIS-based ranking](#post-factum-analysis-topsis-based-ranking)
+- [Post-factum analysis methods](#post-factum-analysis-topsis-based-ranking)
   - [Direct method](#direct-method)
   - [Lexicographic binary search](#lexicographic-binary-search)
   - [Non-linear programming](#non-linear-programming)
