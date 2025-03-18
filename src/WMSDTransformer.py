@@ -15,6 +15,8 @@ from pymoo.optimize import minimize
 from pymoo.core.callback import Callback
 from tqdm import tqdm
 from joblib import Parallel, delayed
+
+from utils.nonlinear_programming_post_factum import nonlinear_post_factum_scip
 from utils.population_reduction import reduce_population_agglomerative_clustering
 from utils.single_criterion_exact_improvement import solve_quadratic_equation, choose_appropriate_solution
 
@@ -87,12 +89,14 @@ class WMSDTransformer(TransformerMixin):
         self.weights = self._original_weights.copy()
         self.weights = self.__normalize_weights(self.weights)
 
+        # preference directions of criteria (max for gain-type criteria, min for cost-type criteria)
         self.objectives = self.__check_objectives(objectives)
         self.objectives = list(map(lambda x: x.replace("gain", "max"), self.objectives))
         self.objectives = list(map(lambda x: x.replace("g", "max"), self.objectives))
         self.objectives = list(map(lambda x: x.replace("cost", "min"), self.objectives))
         self.objectives = list(map(lambda x: x.replace("c", "min"), self.objectives))
 
+        # domains of criteria values, either provided by user or derived from dataset
         self.expert_range = self.__check_expert_range(expert_range)
 
         self.__check_input()
@@ -105,8 +109,8 @@ class WMSDTransformer(TransformerMixin):
             self._upper_bounds.append(self.expert_range[c][1])
             self._value_range.append(self.expert_range[c][1] - self.expert_range[c][0])
 
-        self.X_new = self.__normalize_data(X.copy())
-        self.__wmstd()
+        self.X_new = self.__normalize_data(X.copy()) # min-max scaling
+        self.__wmstd() # adds two columns to DataFrame Mean and Std
         self.X_new[str(self.agg_fn.letter)] = self.agg_fn.TOPSIS_calculation(
             np.mean(self.weights), self.X_new["Mean"], self.X_new["Std"]
         )
@@ -2114,7 +2118,7 @@ class ITOPSIS(TOPSISAggregationFunction):
 
 class RTOPSIS(TOPSISAggregationFunction):
     """
-    A class used to calculate TOPSIS ranking and perform improvement actions for I() aggregation function.
+    A class used to calculate TOPSIS ranking and perform improvement actions for R() aggregation function.
     ...
     Attributes
     ----------
@@ -2238,6 +2242,81 @@ class RTOPSIS(TOPSISAggregationFunction):
                 [modification_vector], columns=self.wmsd_transformer.X.columns
             )
             return result_df
+
+    def improvement_non_linear_programming(
+        self,
+        alternative_to_improve,
+        alternative_to_overcome,
+        epsilon,
+        features_to_change,
+        boundary_values=None, # TODO
+        constant_WM=False,
+        **kwargs,
+    ):
+
+
+        # alternative_to_improve : int or str
+        #     Name or position of the alternative which user wants to improve.
+        # alternative_to_overcome : int or str
+        #     Name or position of the alternative which should be overcome by chosen alternative.
+
+        # epsilon : float
+        #     Precision of calculations. Must be in range (0.0, 1.0>.
+        #     (default : 0.000001)
+        # features_to_change : array of str
+        #     Array containing names of criteria on which change should be calculated.
+        # boundary_values : 2D array of floats
+        #     Array with dimensions number_of_features_to_change x 2. For each feature to change it should
+        #     have provided 2 numbers: lower and upper boundaries of proposed values.
+        #     (default : None)
+
+        """
+        Exact algorithm dedicated to the aggregation `A` for achieving the target by modifying the performance on a single criterion.
+        Calculates minimal change in given criterion value in order to let the alternative achieve the target position.
+        Parameters
+        ----------
+        alternative_to_improve : int or str
+            Name or position of the alternative which user wants to improve.
+        alternative_to_overcome : int or str
+            Name or position of the alternative which should be overcome by chosen alternative.
+        epsilon : float
+            Precision of calculations. Must be in range (0.0, 1.0>.
+            (default : 0.000001)
+        features_to_change : array of str
+            Array containing names of criteria on which change should be calculated.
+        boundary_values : 2D array of floats
+            Array with dimensions number_of_features_to_change x 2. For each feature to change it should
+            have provided 2 numbers: lower and upper boundaries of proposed values.
+            (default : None)
+        constant_WM : bool
+            Indicates whether weight scale mean should remain unchanged after applying proposed modifications
+            (default : False)
+        Returns
+        -------
+        Calculated minimum change on given criteria.
+        """
+
+        excluded_criteria_indices = []
+        for idx, name in enumerate(self.wmsd_transformer.X.columns.tolist()):
+            if name not in features_to_change:
+                excluded_criteria_indices.append(idx)
+
+        performances_US = (alternative_to_improve.drop(labels=["Mean", "Std", str(self.letter)]).to_numpy().copy())
+
+        target_performances_US = nonlinear_post_factum_scip(
+            performances_US=performances_US,
+            weights=self.wmsd_transformer.weights,
+            target_R_value=alternative_to_overcome[str(self.letter)],
+            excluded_criteria_indices=excluded_criteria_indices,
+            constant_WM=constant_WM,
+        )
+
+        if target_performances_US is None:
+            # print("Not possible to achieve target")
+            return None
+        else:
+            return pd.DataFrame([(np.array(target_performances_US) - performances_US) * self.wmsd_transformer._value_range], columns=self.wmsd_transformer.X.columns)
+
 
     def improvement_std(
         self,
