@@ -1,11 +1,13 @@
-This repository hosts the code for **WMSDTransformer** - a scikit-learn compatible python library, that lets you create
-TOPSIS rankings of alternatives, visualize rankings in WMSD space, and get recommendations on how to enhance the
-performance of the alternative so that it can achieve a desired target.
-<!-- Check out the project's [documentation](https://msdtransformer.readthedocs.io/en/latest/index.html) to learn more about using the WMSDTransformer.  -->
+This repository contains the Python implementation of the Post-Factum Analysis (PFA) framework for TOPSIS, as described in the paper *"Reaching the Top: A Comprehensive Framework for Post-Factum Analysis in TOPSIS."*  It provides tools to identify how to modify alternatives to improve their TOPSIS ranking. Specifically, the library offers five main post-factum analysis methods:
+*   Direct method (single-criterion modification)
+*   Lexicographic binary search
+*   Non-linear programming
+*   Evolutionary search (NSGA-II)
+*   WMSD-based approach (preserving weighted mean).
 
 
 # Table of contents
-- [Multiple criteria ranking based on TOPSIS method](#multiple-criteria-ranking-based-on-topsis-method)
+- [Multiple criteria ranking using TOPSIS](#multiple-criteria-ranking-based-on-topsis-method)
   - [TOPSIS method](#topsis-method)
   - [Illustrative example](#illustrative-example)
 - [Post-Factum Analysis TOPSIS-based ranking](#post-factum-analysis-topsis-based-ranking)
@@ -18,11 +20,7 @@ performance of the alternative so that it can achieve a desired target.
 - [Requirements](#requirements)
 - [Citation](#citation)
 
-# Multiple criteria ranking based on TOPSIS method
-
-
-
-## TOPSIS method
+# Multiple criteria ranking using TOPSIS
 
 The Technique for Order of Preference by Similarity to Ideal Solution (TOPSIS) is a multiple criteria decision making
 method. It helps identify the best alternative by comparing the geometric distance of each option to the ideal and
@@ -55,9 +53,6 @@ graph TD
     H --> M
 ```
 
-
-
-## Illustrative example
 
 | Full Name               | SEZ Code |  Total Area [ha] |   Capital Expenditures [B&nbsp;PLN] |    Number of Jobs |  Business Permits   |   Financial Result [B&nbsp;PLN] | R      | Rank |
 |------------------------:|---------:|-----------------:|------------------------------------:|------------------:|--------------------:|--------------------------------:|-------:|-----:|
