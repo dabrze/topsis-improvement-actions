@@ -53,32 +53,38 @@ class WMSDTransformer(TransformerMixin):
         self.n_jobs = n_jobs
 
     def fit(self, X, weights=None, objectives=None, expert_range=None):
-
         """Checks input data and normalizes it.
+
         Parameters
         ----------
-
-        X : data-frame
+        X : pandas DataFrame
             Pandas data-frame provided by the user.
-            Apart from column and row names all values must be numerical.
-        weights : np.array of float, optional
-            Numpy array of criteria' weights.
-            Its length must be equal to self.m (number of criteria).
-            (default: np.ones())
-        objectives : list or dict or str, optional
-            Numpy array informing which criteria are cost type and which are gain type.
+            All values must be numerical, excluding column and row names.
+        weights : np.array of dict, default=None
+            Weights of the criteria - preference information provided by the user.
+            Numpy array of a length equal to the number of criteria.
+            TODO dict ...
+            If None, then criteria are equally weighted.
+        objectives : list or dict or str, default=None
+            Specifies whether criteria are cost or gain type.
             It can be passed as:
-            - list of length equal to self.n. in which each element describes type of one criterion:
+            - a list of length equal to the number of criteria, in which each element describes type of one criterion:
             'cost'/'c'/'min' for cost type criteria and 'gain'/'g'/'max' for gain type criteria.
-            - dictionary of size equal to self.n in which each key is the criterion name and ech value takes one of the following values:
-            'cost'/'c'/'min' for cost type criteria and 'gain'/'g'/'max' for gain type criteria.
+            - dictionary of size equal to the number of criteria in which each key is the criterion name and each value
+            takes one of the following values: 'cost'/'c'/'min' for cost type criteria
+            and 'gain'/'g'/'max' for gain type criteria.
             - a string which describes type of all criteria:
             'cost'/'c'/'min' if criteria are cost type and 'gain'/'g'/'max' if criteria are gain type.
-            (default: list of 'max')
-        expert_range : 2D list or dictionary, optional
+            If None, then all criteria are of a gain type.
+        expert_range : 2D list or dictionary, default=None
             For each criterion must be provided minimal and maximal value.
             All criteria must fit in range [minimal, maximal]
-            (default: 2D list of minimal and maximal values among provided criteria)
+            If None, then expert_range is derived from the extreme values observed in the dataset
+
+        Returns
+        -------
+        self : WMSDTransformer
+            Fitted transformer.
         """
 
         self.X = X
@@ -121,15 +127,18 @@ class WMSDTransformer(TransformerMixin):
 
     def transform(self, X):
         """Transform data from data-frame X to WMSD space.
+
         Parameters
         ----------
+        X : pandas DataFrame
+            Pandas data-frame provided by the user.
+            All values must be numerical, excluding column and row names.
 
-        X : pandas data-frame
-            Data frame that contains data to be transformed.
         Returns
         -------
-        Pandas data-frame.
+        X_transformed: pandas DataFrame
         """
+
         if not self._isFitted:
             raise Exception("fit is required before transform")
 
@@ -146,47 +155,52 @@ class WMSDTransformer(TransformerMixin):
         return X_transformed
     
     def fit_transform(self, X, weights=None, objectives=None, expert_range=None):
-        """Runs fit() method.
+        """Fit to data, then transform it.
+
         Parameters
         ----------
-
-        X : data-frame
+        X : pandas DataFrame
             Pandas data-frame provided by the user.
-            Apart from column and row names all values must be numerical.
-        weights : np.array of float, optional
-            Numpy array of criteria' weights.
-            Its length must be equal to self.n.
-            (default: np.ones())
-        objectives : list or dict or str, optional
-            Numpy array informing which criteria are cost type and which are gain type.
+            All values must be numerical, excluding column and row names.
+        weights : np.array of dict, default=None
+            Weights of the criteria - preference information provided by the user.
+            Numpy array of a length equal to the number of criteria.
+            TODO dict ...
+            If None, then criteria are equally weighted.
+        objectives : list or dict or str, default=None
+            Specifies whether criteria are cost or gain type.
             It can be passed as:
-            - list of length equal to self.n. in which each element describes type of one criterion:
+            - a list of length equal to the number of criteria, in which each element describes type of one criterion:
             'cost'/'c'/'min' for cost type criteria and 'gain'/'g'/'max' for gain type criteria.
-            - dictionary of size equal to self.n in which each key is the criterion name and ech value takes one of the following values:
-            'cost'/'c'/'min' for cost type criteria and 'gain'/'g'/'max' for gain type criteria.
+            - dictionary of size equal to the number of criteria in which each key is the criterion name and each value
+            takes one of the following values: 'cost'/'c'/'min' for cost type criteria
+            and 'gain'/'g'/'max' for gain type criteria.
             - a string which describes type of all criteria:
             'cost'/'c'/'min' if criteria are cost type and 'gain'/'g'/'max' if criteria are gain type.
-            (default: list of 'max')
-        expert_range : 2D list or dictionary, optional
+            If None, then all criteria are of a gain type.
+        expert_range : 2D list or dictionary, default=None
             For each criterion must be provided minimal and maximal value.
             All criteria must fit in range [minimal, maximal]
-            (default: 2D list of minimal and maximal values among provided criteria)
+            If None, then expert_range is derived from the extreme values observed in the dataset
+
+        Returns
+        -------
+        X_new : pandas DataFrame
         """
         self.fit(X, weights, objectives, expert_range)
         return self.X_new
 
     def transform_US_to_wmsd(self, X_US):
         """Transforms data from Utility Space to weighted MSD Space.
+
         Parameters
         ----------
-
-        X_US : data-frame
+        X_US : pandas DataFrame
             Pandas data-frame where data are presented in Utility Space.
 
         Returns
         -------
         Norms w_means and w_stds.
-
         """
         # transform data from Utility Space to WMSD Space
         w = self.weights
@@ -348,8 +362,8 @@ class WMSDTransformer(TransformerMixin):
         return solutions
 
     def plot(self, heatmap_quality=500, show_names=False, plot_name=None, color='jet'):
-
         """Plots positions of alternatives in WMSD space.
+
         Parameters
         ----------
         heatmap_quality : int, optional
@@ -364,6 +378,7 @@ class WMSDTransformer(TransformerMixin):
         color : str, optional
             String that contains a name of a color-scale in which the plot will be presented.
             (default: 'jet')
+
         Returns
         -------
         Plot as a plotly figure.
@@ -575,7 +590,8 @@ class WMSDTransformer(TransformerMixin):
         return self.X_newPoint
 
     def plot_improvement(self, id, changes, show_names=False, change_number=0):
-        """Plots positions of alternatives in WMSD space and visualize the change after applying improvement action. 
+        """Plots positions of alternatives in WMSD space and visualize the change after applying improvement action.
+
         Parameters
         ----------
         id : string
@@ -588,9 +604,10 @@ class WMSDTransformer(TransformerMixin):
         change_number : int, optional
             Integer value indicating which change should be applied to plot, if there are more than 1.
             (default: 0)
+
         Returns
         -------
-        Plot as an plotly figure.
+        Plot as a plotly figure.
         """
         self.__update_for_plot(id, changes, change_number)
         old_rank = (
@@ -706,16 +723,16 @@ class WMSDTransformer(TransformerMixin):
 
     def return_ranking(self, normalized=True):
         """Returns the TOPSIS ranking
+
         Parameters
         ----------
-        normalized : boolean, optional
-            If True, then all criteria values will be shown in their normalized form.
-            If False, then all criteria values will be shown as they were passed by the user.
-            (default True)
+        normalized : boolean, default=True
+            If True, then all criteria values will be returned in their normalized form.
+            If False, then all criteria values will be returned as they were passed by the user.
 
         Returns
         -------
-        Pandas data-frame.
+        ranking : Pandas data-frame.
         """
 
         if not isinstance(normalized, bool):
@@ -748,22 +765,21 @@ class WMSDTransformer(TransformerMixin):
 
     def show_ranking(self, mode="standard", first=1, last=None):
         """Displays the TOPSIS ranking
+
         Parameters
         ----------
-
-        mode : 'minimal'/'standard'/'full', optional
-            Way of display of the ranking. If mode='minimal', then only positions
-            of ranked alternatives will be displayed. If mode='standard' then additionally
-            all criteria values will be showed. If mode='full', then apart of criteria
-            values also values of mean, standard deviation and aggregation function will be displayed.
-            (default 'standard')
-        first : int, optional
+        mode : 'minimal'/'standard'/'full', default="standard"
+            Specifies the level of detail in the ranking display.
+            mode='minimal' shows only the positions of ranked alternatives.
+            mode='standard' shows the positions of ranked alternatives and criteria values
+            mode='full', shows the positions of ranked alternatives, criteria values,
+            and also values of mean, standard deviation and aggregation function
+        first : int, default=1
             Rank from which the ranking should be displayed.
-            (default 1)
-        last : int, optional
+        last : int, default=None
             Rank to which the ranking should be displayed.
-            (default None)
         """
+
         if last is None:
             last = len(self.X_new.index)
 
@@ -813,6 +829,7 @@ class WMSDTransformer(TransformerMixin):
 
     def improvement(self, function_name, alternative_to_improve, alternative_to_overcome, epsilon=1e-06, **kwargs):
         """ Runs chosen by the user improvement function.
+
         Parameters
         ----------
         function_name : str
@@ -831,6 +848,7 @@ class WMSDTransformer(TransformerMixin):
         epsilon : float
             Precision of calculations. Must be in range (0.0, 1.0>.
             (default : 0.000001)
+
         Returns
         -------
         Output returned by the [function_name] function.
@@ -2156,7 +2174,7 @@ class RTOPSIS(TOPSISAggregationFunction):
         **kwargs,
     ):
         """
-        Exact algorithm dedicated to the aggregation `A` for achieving the target by modifying the performance on a single criterion.
+        Exact algorithm dedicated to the aggregation `R` for achieving the target by modifying the performance on a single criterion.
         Calculates minimal change in given criterion value in order to let the alternative achieve the target position.
         Parameters
         ----------
@@ -2271,8 +2289,10 @@ class RTOPSIS(TOPSISAggregationFunction):
         #     (default : None)
 
         """
-        Exact algorithm dedicated to the aggregation `A` for achieving the target by modifying the performance on a single criterion.
+        Non-linear programming based exact algorithm dedicated to the aggregation `R` for achieving the target
+        by modifying the performance on multiple criteria
         Calculates minimal change in given criterion value in order to let the alternative achieve the target position.
+
         Parameters
         ----------
         alternative_to_improve : int or str
@@ -2291,6 +2311,7 @@ class RTOPSIS(TOPSISAggregationFunction):
         constant_WM : bool
             Indicates whether weight scale mean should remain unchanged after applying proposed modifications
             (default : False)
+
         Returns
         -------
         Calculated minimum change on given criteria.
