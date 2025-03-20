@@ -60,7 +60,7 @@ class WMSDTransformer(TransformerMixin):
         X : pandas DataFrame
             Pandas data-frame provided by the user.
             All values must be numerical, excluding column and row names.
-        weights : np.array of dict, default=None
+        weights : list or dict, default=None
             Weights of the criteria - preference information provided by the user.
             Numpy array of a length equal to the number of criteria.
             TODO dict ...
