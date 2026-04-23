@@ -117,8 +117,8 @@ class WMSDTransformer(TransformerMixin):
 
         self.X_new = self.__normalize_data(X.copy()) # min-max scaling
         self.__wmstd() # adds two columns to DataFrame Mean and Std
-        self.X_new[str(self.agg_fn.letter)] = self.agg_fn.TOPSIS_calculation(
-            np.mean(self.weights), self.X_new["Mean"], self.X_new["Std"]
+        self.X_new[str(self.agg_fn.letter)] = self.agg_fn.score_batch(
+            np.array(self.X_new.loc[:, self.X.columns], dtype=float)
         )
         self._ranked_alternatives = self.__ranking()
         self._isFitted = True
@@ -145,8 +145,8 @@ class WMSDTransformer(TransformerMixin):
         self.__check_input_after_transform(X)
         X_transformed = self.__normalize_data(X.copy())
         w_means, w_stds = self.transform_US_to_wmsd(np.array(X_transformed))
-        agg_values = self.agg_fn.TOPSIS_calculation(
-            np.mean(self.weights), w_means, w_stds
+        agg_values = self.agg_fn.score_batch(
+            np.array(X_transformed.loc[:, self.X.columns], dtype=float)
         )
         X_transformed["Mean"] = w_means
         X_transformed["Std"] = w_stds
@@ -361,6 +361,12 @@ class WMSDTransformer(TransformerMixin):
 
         return solutions
 
+    def __ensure_wmsd_aggregation(self, function_name):
+        if not isinstance(self.agg_fn, WMSDAggregationFunction):
+            raise NotImplementedError(
+                f"{function_name} is available only for WMSD-based aggregation functions."
+            )
+
     def plot(self, heatmap_quality=500, show_names=False, plot_name=None, color='jet'):
         """Plots positions of alternatives in WMSD space.
 
@@ -383,6 +389,7 @@ class WMSDTransformer(TransformerMixin):
         -------
         Plot as a plotly figure.
         """
+        self.__ensure_wmsd_aggregation("plot")
 
         # for all possible mean and std count aggregation value and color it by it
         mean_ticks = np.linspace(0, 1, heatmap_quality + 1)
@@ -583,8 +590,8 @@ class WMSDTransformer(TransformerMixin):
             )
             self.X_newPoint = self.__normalize_data(self.X_newPoint)
             w_means, w_stds = self.transform_US_to_wmsd(np.array(self.X_newPoint))
-            agg_values = self.agg_fn.TOPSIS_calculation(
-                np.mean(self.weights), w_means, w_stds
+            agg_values = self.agg_fn.score_batch(
+                np.array(self.X_newPoint.loc[:, self.X.columns], dtype=float)
             )
             self.X_newPoint["Mean"] = w_means
             self.X_newPoint["Std"] = w_stds
@@ -611,6 +618,7 @@ class WMSDTransformer(TransformerMixin):
         -------
         Plot as a plotly figure.
         """
+        self.__ensure_wmsd_aggregation("plot_improvement")
         self.__update_for_plot(id, changes, change_number)
         old_rank = (
             self.X_new.sort_values(by=str(self.agg_fn.letter), ascending=False).index.get_loc(id) + 1
@@ -891,15 +899,25 @@ class WMSDTransformer(TransformerMixin):
                 return ITOPSIS(self)
             elif agg_fn == "R":
                 return RTOPSIS(self)
+            elif agg_fn == "U":
+                return SAW(self)
+            elif agg_fn == "C":
+                return COPRAS(self)
+            elif agg_fn == "K":
+                return ARAS(self)
+            elif agg_fn == "W":
+                return WASPAS(self)
             else:
                 raise ValueError(
-                    "Invalid value at 'agg_fn': must be string (A, I, or R) or class implementing TOPSISAggregationFunction."
+                    "Invalid value at 'agg_fn': must be string (A, I, R, U, C, K, or W) or class implementing AggregationFunction."
                 )
-        elif issubclass(agg_fn, TOPSISAggregationFunction):
+        elif isinstance(agg_fn, AggregationFunction):
+            return agg_fn.fit(self)
+        elif isinstance(agg_fn, type) and issubclass(agg_fn, AggregationFunction):
             return agg_fn(self)
         else:
             raise ValueError(
-                "Invalid value at 'agg_fn': must be string (A, I, or R) or class implementing TOPSISAggregationFunction."
+                "Invalid value at 'agg_fn': must be string (A, I, R, U, C, K, or W) or class implementing AggregationFunction."
             )
 
     def __check_weights(self, weights):
@@ -1112,36 +1130,31 @@ class WMSDTransformer(TransformerMixin):
         return new_list
 
 
-class TOPSISAggregationFunction(ABC):
+class AggregationFunction(ABC):
     """
-    A class used to calculate TOPSIS ranking and perform improvement actions.
-    ...
-    Attributes
-    ----------
-    wmsd_transformer : WMSDTransformer object
+    Base interface for scalar MCDA aggregation functions.
     """
 
-    def __init__(self, wmsd_transformer):
+    letter = None
+
+    def __init__(self, wmsd_transformer=None):
+        self.wmsd_transformer = None
+        if wmsd_transformer is not None:
+            self.fit(wmsd_transformer)
+
+    def fit(self, wmsd_transformer):
         self.wmsd_transformer = wmsd_transformer
+        return self
+
+    def score(self, normalized_vector):
+        matrix = np.atleast_2d(np.asarray(normalized_vector, dtype=float))
+        return self.score_batch(matrix).item()
 
     @abstractmethod
-    def TOPSIS_calculation(self, w, wm, wsd):
-        """Calculates TOPSIS values according to chosen aggregation function.
-        Parameters
-        ----------
-        w : TODO
-            Weights.
-        wm : TODO
-            Weighted mean.
-        wsd : TODO
-            Weighted standard deviation.
-        Returns
-        -------
-        Calculated aggregation function value.
-        """
+    def score_batch(self, normalized_matrix):
+        """Calculates aggregation scores for normalized alternatives."""
         pass
 
-    @abstractmethod
     def improvement_single_feature(
         self,
         alternative_to_improve,
@@ -1150,23 +1163,216 @@ class TOPSISAggregationFunction(ABC):
         feature_to_change,
         **kwargs,
     ):
-        """ Calculates minimal change in given criterion value in order to 
-        let the alternative achieve the target position.
-        Parameters
-        ----------
-        alternative_to_improve : int or str
-            Name or position of the alternative which user wants to improve.
-        alternative_to_overcome : int or str
-            Name or position of the alternative which should be overcome by chosen alternative.
-        epsilon : float
-            Precision of calculations. Must be in range (0.0, 1.0>.
-            (default : 0.000001)
-        feature_to_change : str
-            Name of criterion on which change should be calculated.
-        Returns
-        -------
-        Calculated minimal change in given criterion.
-        """
+        """Calculates the required change on a single criterion."""
+        return self.improvement_features(
+            alternative_to_improve,
+            alternative_to_overcome,
+            epsilon,
+            features_to_change=[feature_to_change],
+            **kwargs,
+        )
+
+    def __check_boundary_values(self, alternative_to_improve, features_to_change, boundary_values):
+        if boundary_values is None:
+            boundary_values = np.ones(len(features_to_change))
+        elif not isinstance(boundary_values, list):
+            raise TypeError("Invalid value at 'boundary_values': must be a list")
+        else:
+            if len(features_to_change) != len(boundary_values):
+                raise ValueError("Invalid value at 'boundary_values': must be same length as 'features_to_change'")
+
+            lower_bounds = self.wmsd_transformer._lower_bounds
+            upper_bounds = self.wmsd_transformer._upper_bounds
+            value_range = self.wmsd_transformer._value_range
+            criteria_columns = self.wmsd_transformer.X.columns
+
+            for i, feature_name in enumerate(features_to_change):
+                col = criteria_columns.get_loc(feature_name)
+                if boundary_values[i] < lower_bounds[col] or boundary_values[i] > upper_bounds[col]:
+                    raise ValueError("Invalid value at 'boundary_values': must be between defined 'expert_range'")
+                else:
+                    boundary_values[i] = (boundary_values[i] - lower_bounds[col]) / value_range[col]
+                    if self.wmsd_transformer.objectives[col] == "min":
+                        boundary_values[i] = 1 - boundary_values[i]
+                    if alternative_to_improve[feature_name] > boundary_values[i]:
+                        raise ValueError(
+                            "Invalid value at 'boundary_values': must be better than or equal to the performances of the alternative being improved"
+                        )
+
+        return np.array(boundary_values)
+
+    def __check_epsilon(self, epsilon, w):
+        if not (isinstance(epsilon, float) or isinstance(epsilon, int)):
+            raise ValueError("Invalid value at 'epsilon': must be a float")
+
+        mean_weight = np.mean(w)
+        if (epsilon < 0.0) or (epsilon > mean_weight/2):
+            raise ValueError(f"Invalid value at 'epsilon': must be in range [0, {mean_weight/2}]")
+
+    def improvement_features(
+        self,
+        alternative_to_improve,
+        alternative_to_overcome,
+        epsilon,
+        features_to_change,
+        boundary_values=None,
+        **kwargs,
+    ):
+        if alternative_to_improve[str(self.letter)] >= alternative_to_overcome[str(self.letter)]:
+            raise ValueError("Invalid value at 'alternative_to_improve': must be worse than alternative_to_overcome'")
+
+        self.__check_epsilon(epsilon, self.wmsd_transformer.weights)
+        boundary_values = self.__check_boundary_values(alternative_to_improve, features_to_change, boundary_values)
+
+        initial_performances = alternative_to_improve.loc[self.wmsd_transformer.X.columns]
+        current_performances = initial_performances.copy()
+
+        is_improvement_satisfactory = False
+        for i, k in zip(features_to_change, boundary_values):
+            current_performances[i] = k
+            agg_value = self.score(current_performances.to_numpy())
+
+            if agg_value < alternative_to_overcome[str(self.letter)]:
+                continue
+
+            current_performances[i] = 0.5 * k
+            agg_value = self.score(current_performances.to_numpy())
+            change_ratio = 0.25 * k
+            while True:
+                if agg_value < alternative_to_overcome[str(self.letter)]:
+                    current_performances[i] += change_ratio
+                elif agg_value - alternative_to_overcome[str(self.letter)] > epsilon:
+                    current_performances[i] -= change_ratio
+                else:
+                    is_improvement_satisfactory = True
+                    break
+                change_ratio = change_ratio / 2
+                agg_value = self.score(current_performances.to_numpy())
+
+            if is_improvement_satisfactory:
+                value_range = self.wmsd_transformer._value_range
+                performance_modifications = current_performances - initial_performances
+                for j in range(len(performance_modifications)):
+                    if performance_modifications.iloc[j] == 0:
+                        continue
+                    elif self.wmsd_transformer.objectives[j] == "max":
+                        performance_modifications.iloc[j] = value_range[j] * performance_modifications.iloc[j]
+                    else:
+                        performance_modifications.iloc[j] = -value_range[j] * performance_modifications.iloc[j]
+                result_df = performance_modifications.to_frame().transpose()
+                result_df = result_df.reset_index(drop=True)
+                return result_df
+        else:
+            return None
+
+    def improvement_genetic(
+        self,
+        alternative_to_improve,
+        alternative_to_overcome,
+        epsilon,
+        features_to_change,
+        boundary_values=None,
+        allow_deterioration=False,
+        popsize=None,
+        n_generations=200,
+        save_checkpoints=False,
+    ):
+        boundary_values = self.__check_boundary_values(
+            alternative_to_improve, features_to_change, boundary_values
+        )
+
+        current_performances_US = (
+            alternative_to_improve.loc[self.wmsd_transformer.X.columns].to_numpy().copy()
+        )
+        modified_criteria_subset = [
+            x in features_to_change for x in self.wmsd_transformer.X.columns.tolist()
+        ]
+
+        max_possible_improved = current_performances_US.copy()
+        max_possible_improved[modified_criteria_subset] = boundary_values
+        max_possible_agg_value = self.score(max_possible_improved)
+        if max_possible_agg_value < alternative_to_overcome[str(self.letter)]:
+            return None
+
+        problem = PostFactumAggregationPymoo(
+            aggregation_model=self.wmsd_transformer,
+            modified_criteria_subset=modified_criteria_subset,
+            current_performances=current_performances_US,
+            target_agg_value=alternative_to_overcome[str(self.letter)],
+            upper_bounds=boundary_values,
+            allow_deterioration=allow_deterioration,
+        )
+
+        if popsize is None:
+            popsize_by_n_objectives = {2: 200, 3: 1000, 4: 2000}
+            popsize = popsize_by_n_objectives.get(len(features_to_change), 5000)
+
+        algorithm = NSGA2(
+            pop_size=popsize,
+            crossover=SBX(eta=15, prob=0.9),
+            mutation=PM(eta=20),
+            save_history=False,
+        )
+
+        if save_checkpoints:
+            my_callback = MyProgressBar(n_generations, ' '.join(features_to_change))
+            res = minimize(
+                problem,
+                algorithm,
+                termination=('n_gen', n_generations),
+                callback=my_callback,
+                seed=42,
+                verbose=False,
+            )
+            print("Genetic algorithm execution time", res.exec_time)
+
+            checkpoints = my_callback.checkpoints
+            checkpoints[f"gen_{n_generations}_final"] = {
+                "problem": res.problem,
+                "exec_time": res.exec_time,
+                "CV": res.CV,
+                "F": res.F,
+                "G": res.G,
+                "X": res.X
+            }
+            result_path = f"checkpoints_popsize_{popsize}_n_gen_{n_generations}_{time.strftime('%Y_%m_%d_%H_%M_%S')}.pickle"
+            print("Saving genetic algorithm checkpoints to:", result_path)
+            pd.to_pickle(checkpoints, result_path)
+        else:
+            res = minimize(
+                problem,
+                algorithm,
+                termination=('n_gen', n_generations),
+                seed=42,
+                verbose=False,
+            )
+            checkpoints = None
+
+        if res.F is not None:
+            improvement_actions = np.zeros(
+                shape=(len(res.F), len(current_performances_US))
+            )
+            improvement_actions[:, modified_criteria_subset] = (
+                res.F - current_performances_US[modified_criteria_subset]
+            )
+            improvement_actions *= np.array(self.wmsd_transformer._value_range)
+            improvement_actions[
+                :, np.array(self.wmsd_transformer.objectives) == "min"
+            ] *= -1
+            return pd.DataFrame(
+                sorted(improvement_actions.tolist(), key=lambda x: x[0]),
+                columns=self.wmsd_transformer.X.columns,
+            ), checkpoints
+        else:
+            return None, None
+
+
+class WMSDAggregationFunction(AggregationFunction):
+    """Base for aggregation methods that operate in WMSD space."""
+
+    @abstractmethod
+    def score_from_wmsd(self, mean_weight, w_means, w_stds):
+        """Calculates scores from WMSD coordinates."""
         pass
 
     def improvement_mean(
@@ -1209,13 +1415,13 @@ class TOPSISAggregationFunction(ABC):
         m_boundary = w
         std_start = alternative_to_improve["Std"]
         if (
-            self.TOPSIS_calculation(w, m_boundary, alternative_to_improve["Std"])
+            self.score_from_wmsd(w, m_boundary, alternative_to_improve["Std"])
             < alternative_to_overcome[str(self.letter)]
         ):
             return None
         else:
             change = (m_boundary - alternative_to_improve["Mean"]) / 2
-            actual_aggfn = self.TOPSIS_calculation(
+            actual_aggfn = self.score_from_wmsd(
                 w, alternative_to_improve["Mean"], alternative_to_improve["Std"]
             )
             while True:
@@ -1226,7 +1432,7 @@ class TOPSISAggregationFunction(ABC):
                     ):
                         alternative_to_improve["Mean"] -= change
                         change = change / 2
-                        actual_aggfn = self.TOPSIS_calculation(
+                        actual_aggfn = self.score_from_wmsd(
                             w,
                             alternative_to_improve["Mean"],
                             alternative_to_improve["Std"],
@@ -1235,7 +1441,7 @@ class TOPSISAggregationFunction(ABC):
                         break
                 else:
                     alternative_to_improve["Mean"] += change
-                    actual_aggfn = self.TOPSIS_calculation(
+                    actual_aggfn = self.score_from_wmsd(
                         w, alternative_to_improve["Mean"], alternative_to_improve["Std"]
                     )
                     if actual_aggfn >= alternative_to_overcome[str(self.letter)]:
@@ -1255,7 +1461,7 @@ class TOPSISAggregationFunction(ABC):
                 alternative_to_improve["Std"] = self.wmsd_transformer.max_std_calculator(
                     alternative_to_improve["Mean"], self.wmsd_transformer.weights
                 )
-                actual_aggfn = self.TOPSIS_calculation(
+                actual_aggfn = self.score_from_wmsd(
                     w, alternative_to_improve["Mean"], alternative_to_improve["Std"]
                 )
                 if actual_aggfn >= alternative_to_overcome[str(self.letter)]:
@@ -1338,6 +1544,33 @@ class TOPSISAggregationFunction(ABC):
             result['Std'] = result_stds - std_start
             return result
 
+
+class TOPSISAggregationFunction(WMSDAggregationFunction):
+    """
+    A class used to calculate TOPSIS ranking and perform improvement actions.
+    ...
+    Attributes
+    ----------
+    wmsd_transformer : WMSDTransformer object
+    """
+
+    @abstractmethod
+    def TOPSIS_calculation(self, w, wm, wsd):
+        """Calculates TOPSIS values according to chosen aggregation function."""
+        pass
+
+    def score_from_wmsd(self, mean_weight, w_means, w_stds):
+        return self.TOPSIS_calculation(mean_weight, w_means, w_stds)
+
+    def score_batch(self, normalized_matrix):
+        normalized_matrix = np.atleast_2d(np.asarray(normalized_matrix, dtype=float))
+        w_means, w_stds = self.wmsd_transformer.transform_US_to_wmsd(normalized_matrix)
+        return self.score_from_wmsd(
+            np.mean(self.wmsd_transformer.weights),
+            w_means,
+            w_stds,
+        )
+
     def __check_boundary_values(self, alternative_to_improve, features_to_change, boundary_values):
         if boundary_values is None:
             boundary_values = np.ones(len(features_to_change))
@@ -1350,9 +1583,10 @@ class TOPSISAggregationFunction(ABC):
             lower_bounds = self.wmsd_transformer._lower_bounds
             upper_bounds = self.wmsd_transformer._upper_bounds
             value_range = self.wmsd_transformer._value_range
+            criteria_columns = self.wmsd_transformer.X.columns
 
             for i, feature_name in enumerate(features_to_change):
-                col = self.wmsd_transformer.X_new.columns.get_loc(feature_name)
+                col = criteria_columns.get_loc(feature_name)
                 if boundary_values[i] < lower_bounds[col] or boundary_values[i] > upper_bounds[col]:
                     raise ValueError("Invalid value at 'boundary_values': must be between defined 'expert_range'")
                 else:
@@ -1410,16 +1644,14 @@ class TOPSISAggregationFunction(ABC):
         self.__check_epsilon(epsilon, self.wmsd_transformer.weights)
         boundary_values = self.__check_boundary_values(alternative_to_improve, features_to_change, boundary_values)
 
-        initial_performances = alternative_to_improve.drop(labels=["Mean", "Std", str(self.letter)])
+        initial_performances = alternative_to_improve.loc[self.wmsd_transformer.X.columns]
         current_performances = initial_performances.copy()
-        mean_weight = np.mean(self.wmsd_transformer.weights)
 
         is_improvement_satisfactory = False
         for i, k in zip(features_to_change, boundary_values):
             # Applying the maximum allowable improvement of the alternative's evaluation on the i-th criterion
             current_performances[i] = k
-            mean, std = self.wmsd_transformer.transform_US_to_wmsd([current_performances])
-            agg_value = self.TOPSIS_calculation(mean_weight, mean, std)
+            agg_value = self.score(current_performances.to_numpy())
 
             # If the maximum allowable improvement on this criterion is not sufficient to achieve the target,
             # then it is necessary to improve on the next criterion.
@@ -1429,10 +1661,7 @@ class TOPSISAggregationFunction(ABC):
             # If the maximum allowable improvement of this criterion is sufficient to achieve the goal,
             # perform the binary search algorithm to achieve the target by means of the minimal improvement.
             current_performances[i] = 0.5 * k
-            mean, std = self.wmsd_transformer.transform_US_to_wmsd(
-                [current_performances]
-            )
-            agg_value = self.TOPSIS_calculation(mean_weight, mean, std)
+            agg_value = self.score(current_performances.to_numpy())
             change_ratio = 0.25 * k
             while True:
                 if agg_value < alternative_to_overcome[str(self.letter)]:
@@ -1443,8 +1672,7 @@ class TOPSISAggregationFunction(ABC):
                     is_improvement_satisfactory = True
                     break
                 change_ratio = change_ratio / 2
-                mean, std = self.wmsd_transformer.transform_US_to_wmsd([current_performances])
-                agg_value = self.TOPSIS_calculation(mean_weight, mean, std)
+                agg_value = self.score(current_performances.to_numpy())
 
             if is_improvement_satisfactory:
                 value_range = self.wmsd_transformer._value_range
@@ -1510,9 +1738,7 @@ class TOPSISAggregationFunction(ABC):
         # TODO check if criteria names are correct (I misspelled once)
 
         current_performances_US = (
-            alternative_to_improve.drop(labels=["Mean", "Std", str(self.letter)])
-            .to_numpy()
-            .copy()
+            alternative_to_improve.loc[self.wmsd_transformer.X.columns].to_numpy().copy()
         )
         modified_criteria_subset = [
             x in features_to_change for x in self.wmsd_transformer.X.columns.tolist()
@@ -1520,18 +1746,13 @@ class TOPSISAggregationFunction(ABC):
 
         max_possible_improved = current_performances_US.copy()
         max_possible_improved[modified_criteria_subset] = boundary_values
-        w_means, w_stds = self.wmsd_transformer.transform_US_to_wmsd(
-            np.array([max_possible_improved])
-        )
-        max_possible_agg_value = self.TOPSIS_calculation(
-            np.mean(self.wmsd_transformer.weights), w_means, w_stds
-        ).item()
+        max_possible_agg_value = self.score(max_possible_improved)
         if max_possible_agg_value < alternative_to_overcome[str(self.letter)]:
             # print(f"Not possible to achieve target {alternative_to_overcome['AggFn']} with specified features and boundary_values. Max possible agg value is {max_possible_agg_value}")
             return None
 
-        problem = PostFactumTopsisPymoo(
-            topsis_model=self.wmsd_transformer,
+        problem = PostFactumAggregationPymoo(
+            aggregation_model=self.wmsd_transformer,
             modified_criteria_subset=modified_criteria_subset,
             current_performances=current_performances_US,
             target_agg_value=alternative_to_overcome[str(self.letter)],
@@ -1572,7 +1793,7 @@ class TOPSISAggregationFunction(ABC):
                 "G": res.G,
                 "X": res.X
             }
-            result_path = f"checkpoints_popsize_{popsize}_n_gen_{n_generations}_{time.strftime("%Y_%m_%d_%H_%M_%S")}.pickle"
+            result_path = f"checkpoints_popsize_{popsize}_n_gen_{n_generations}_{time.strftime('%Y_%m_%d_%H_%M_%S')}.pickle"
             print("Saving genetic algorithm checkpoints to:", result_path)
             pd.to_pickle(checkpoints, result_path)
         else:
@@ -1631,7 +1852,7 @@ class MyProgressBar(Callback):
         self.progress_bar.update_to(algorithm.n_iter, self.n_gen)
 
 
-class PostFactumTopsisPymoo(Problem):
+class PostFactumAggregationPymoo(Problem):
     """
     Class description
     ...
@@ -1654,7 +1875,7 @@ class PostFactumTopsisPymoo(Problem):
 
     def __init__(
         self,
-        topsis_model,
+        aggregation_model,
         modified_criteria_subset,
         current_performances,
         target_agg_value,
@@ -1666,8 +1887,7 @@ class PostFactumTopsisPymoo(Problem):
             n_var=n_criteria, n_obj=n_criteria, n_ieq_constr=1, vtype=float
         )
 
-        self.topsis_model = topsis_model
-        self.mean_weight = np.mean(self.topsis_model.weights)
+        self.aggregation_model = aggregation_model
         self.modified_criteria_subset = np.array(modified_criteria_subset).astype(bool)
         self.current_performances = current_performances.copy()
         self.target_agg_value = target_agg_value
@@ -1691,14 +1911,177 @@ class PostFactumTopsisPymoo(Problem):
         modified_performances[
             :, self.modified_criteria_subset
         ] = x.copy()  # this copy might be redundant
-        w_means, w_stds = self.topsis_model.transform_US_to_wmsd(modified_performances)
-        agg_values = self.topsis_model.agg_fn.TOPSIS_calculation(
-            self.mean_weight, w_means, w_stds
-        )
+        agg_values = self.aggregation_model.agg_fn.score_batch(modified_performances)
         g1 = (
             self.target_agg_value - agg_values
         )  # In Pymoo positive values indicate constraint violation
         out["G"] = np.array([g1])
+
+
+class PostFactumTopsisPymoo(PostFactumAggregationPymoo):
+    pass
+
+
+class SAW(AggregationFunction):
+    """Simple Additive Weighting aggregation."""
+
+    def __init__(self, wmsd_transformer=None):
+        super().__init__(wmsd_transformer)
+        self.letter = "U"
+
+    def score_batch(self, normalized_matrix):
+        normalized_matrix = np.atleast_2d(np.asarray(normalized_matrix, dtype=float))
+        return normalized_matrix @ np.asarray(self.wmsd_transformer.weights, dtype=float)
+
+    def improvement_single_feature(
+        self,
+        alternative_to_improve,
+        alternative_to_overcome,
+        epsilon,
+        feature_to_change,
+        **kwargs,
+    ):
+        if alternative_to_improve[str(self.letter)] >= alternative_to_overcome[str(self.letter)]:
+            raise ValueError(
+                "Invalid value at 'alternative_to_improve': must be worse than alternative_to_overcome'"
+            )
+
+        criteria_columns = self.wmsd_transformer.X.columns
+        performances_US = alternative_to_improve.loc[criteria_columns].to_numpy().copy()
+        modified_criterion_idx = list(criteria_columns).index(feature_to_change)
+        criterion_weight = self.wmsd_transformer.weights[modified_criterion_idx]
+        if criterion_weight <= 0:
+            return None
+
+        target_score = alternative_to_overcome[str(self.letter)] + epsilon / 2
+        current_score = self.score(performances_US)
+        required_delta = target_score - current_score
+        if required_delta <= 0:
+            return pd.DataFrame(
+                [np.zeros_like(performances_US)],
+                columns=criteria_columns,
+            )
+
+        normalized_delta = required_delta / criterion_weight
+        improved_value = performances_US[modified_criterion_idx] + normalized_delta
+        if improved_value > 1:
+            return None
+
+        feature_modification = normalized_delta * self.wmsd_transformer._value_range[modified_criterion_idx]
+        if self.wmsd_transformer.objectives[modified_criterion_idx] == "min":
+            feature_modification *= -1
+
+        modification_vector = np.zeros_like(performances_US)
+        modification_vector[modified_criterion_idx] = feature_modification
+        return pd.DataFrame([modification_vector], columns=criteria_columns)
+
+
+class ARAS(AggregationFunction):
+    """Additive Ratio Assessment aggregation on normalized utility data."""
+
+    def __init__(self, wmsd_transformer=None):
+        super().__init__(wmsd_transformer)
+        self.letter = "K"
+
+    def score_batch(self, normalized_matrix):
+        normalized_matrix = np.atleast_2d(np.asarray(normalized_matrix, dtype=float))
+        weights = np.asarray(self.wmsd_transformer.weights, dtype=float)
+        weight_sum = np.sum(weights)
+        if weight_sum == 0:
+            return np.zeros(normalized_matrix.shape[0], dtype=float)
+        return (normalized_matrix @ weights) / weight_sum
+
+    def improvement_single_feature(
+        self,
+        alternative_to_improve,
+        alternative_to_overcome,
+        epsilon,
+        feature_to_change,
+        **kwargs,
+    ):
+        if alternative_to_improve[str(self.letter)] >= alternative_to_overcome[str(self.letter)]:
+            raise ValueError(
+                "Invalid value at 'alternative_to_improve': must be worse than alternative_to_overcome'"
+            )
+
+        criteria_columns = self.wmsd_transformer.X.columns
+        performances_US = alternative_to_improve.loc[criteria_columns].to_numpy().copy()
+        modified_criterion_idx = list(criteria_columns).index(feature_to_change)
+        weights = np.asarray(self.wmsd_transformer.weights, dtype=float)
+        weight_sum = np.sum(weights)
+        if weight_sum == 0:
+            return None
+
+        criterion_weight = weights[modified_criterion_idx] / weight_sum
+        if criterion_weight <= 0:
+            return None
+
+        target_score = alternative_to_overcome[str(self.letter)] + epsilon / 2
+        current_score = self.score(performances_US)
+        required_delta = target_score - current_score
+        if required_delta <= 0:
+            return pd.DataFrame(
+                [np.zeros_like(performances_US)],
+                columns=criteria_columns,
+            )
+
+        normalized_delta = required_delta / criterion_weight
+        improved_value = performances_US[modified_criterion_idx] + normalized_delta
+        if improved_value > 1:
+            return None
+
+        feature_modification = normalized_delta * self.wmsd_transformer._value_range[modified_criterion_idx]
+        if self.wmsd_transformer.objectives[modified_criterion_idx] == "min":
+            feature_modification *= -1
+
+        modification_vector = np.zeros_like(performances_US)
+        modification_vector[modified_criterion_idx] = feature_modification
+        return pd.DataFrame([modification_vector], columns=criteria_columns)
+
+
+class COPRAS(AggregationFunction):
+    """COPRAS-inspired score on normalized utility data."""
+
+    def __init__(self, wmsd_transformer=None):
+        super().__init__(wmsd_transformer)
+        self.letter = "C"
+
+    def score_batch(self, normalized_matrix):
+        normalized_matrix = np.atleast_2d(np.asarray(normalized_matrix, dtype=float))
+        weights = np.asarray(self.wmsd_transformer.weights, dtype=float)
+        objectives = np.asarray(self.wmsd_transformer.objectives)
+
+        gain_mask = objectives == "max"
+        cost_mask = objectives == "min"
+
+        sp = np.sum(normalized_matrix[:, gain_mask] * weights[gain_mask], axis=1)
+        if not np.any(cost_mask):
+            return sp
+
+        sm = np.sum((1 - normalized_matrix[:, cost_mask]) * weights[cost_mask], axis=1)
+        sm = np.maximum(sm, 1e-12)
+        return sp / sm
+
+
+class WASPAS(AggregationFunction):
+    """Weighted Aggregated Sum Product Assessment on normalized utility data."""
+
+    def __init__(self, wmsd_transformer=None, lam=0.5):
+        self.lam = lam
+        super().__init__(wmsd_transformer)
+        self.letter = "W"
+
+    def score_batch(self, normalized_matrix):
+        normalized_matrix = np.atleast_2d(np.asarray(normalized_matrix, dtype=float))
+        weights = np.asarray(self.wmsd_transformer.weights, dtype=float)
+        weight_sum = np.sum(weights)
+        if weight_sum == 0:
+            return np.zeros(normalized_matrix.shape[0], dtype=float)
+
+        normalized_weights = weights / weight_sum
+        q_sum = np.sum(normalized_matrix * normalized_weights, axis=1)
+        q_prod = np.prod(normalized_matrix ** normalized_weights, axis=1)
+        return self.lam * q_sum + (1 - self.lam) * q_prod
 
 
 class ATOPSIS(TOPSISAggregationFunction):

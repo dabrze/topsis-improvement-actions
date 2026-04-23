@@ -5,6 +5,20 @@ This repository contains the Python implementation of the post-factum analysis (
 *   Evolutionary search (NSGA-II)
 *   WM Retaining (preserving weighted mean).
 
+The library now also exposes score-based non-TOPSIS aggregations:
+
+| Method | Constructor | Score column | Direct / ordered / genetic | WMSD plot / mean / std / NLP |
+| --- | --- | --- | --- | --- |
+| SAW | `WMSDTransformer(SAW)` or `"U"` | `U` | Yes | No |
+| ARAS | `WMSDTransformer(ARAS)` or `"K"` | `K` | Yes | No |
+| COPRAS | `WMSDTransformer(COPRAS)` or `"C"` | `C` | Yes | No |
+| WASPAS | `WMSDTransformer(WASPAS)` or `"W"` | `W` | Yes | No |
+| RTOPSIS | `WMSDTransformer(RTOPSIS)` or `"R"` | `R` | Yes | Yes |
+| ATOPSIS | `WMSDTransformer(ATOPSIS)` or `"A"` | `A` | Yes | Yes |
+| ITOPSIS | `WMSDTransformer(ITOPSIS)` or `"I"` | `I` | Yes | Yes |
+
+For non-WMSD methods, the reusable score-driven paths are available: `improvement_single_feature`, `improvement_features`, and `improvement_genetic`. WMSD-only capabilities (`plot`, `plot_improvement`, `improvement_mean`, `improvement_std`, and RTOPSIS nonlinear programming) remain TOPSIS-family only.
+
 
 # Table of contents
 - [Table of contents](#table-of-contents)

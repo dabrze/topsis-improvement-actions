@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wmsd"
+version = "1.0.0"
+description = "TOPSIS ranking and interpretation using WMSD-space"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Maciej Woś", email = "maciejwos01@gmail.com" },
+    { name = "Bogna Kilanowska", email = "bogna.kilanowska@student.put.poznan.pl" },
+    { name = "Adam Ciesiółka", email = "adam.ciesiolka@student.put.poznan.pl" },
+]
+keywords = [
+    "visualization",
+    "ranking",
+    "multi-criteria-decision-aid",
+    "mcda",
+    "topsis",
+    "explainability",
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "dataclasses",
+    "numpy",
+    "numba",
+    "pandas",
+    "scikit-learn",
+    "matplotlib",
+    "plotly",
+    "pytest",
+    "ipython",
+    "jupyterlab",
+    "pymoo",
+    "pyscipopt",
+    "joblib",
+]
+
+[project.optional-dependencies]
+dev = ["pymcdm"]
+gurobi = ["gurobipy"]
+
+[project.urls]
+repository = "https://github.com/dabrze/topsis-msd-improvement-actions"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+py-modules = ["WMSDTransformer"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["utils*"]
