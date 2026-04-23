@@ -578,7 +578,9 @@ class WMSDTransformer(TransformerMixin):
             result = self.X.loc[id].add(row_to_add, fill_value=0)
             new_row = pd.Series(result, name="NEW " + id)
             self.X_newPoint = self.X.copy()
-            self.X_newPoint = self.X_newPoint.append(new_row)
+            self.X_newPoint = pd.concat(
+                [self.X_newPoint, new_row.to_frame().T]
+            )
             self.X_newPoint = self.__normalize_data(self.X_newPoint)
             w_means, w_stds = self.transform_US_to_wmsd(np.array(self.X_newPoint))
             agg_values = self.agg_fn.TOPSIS_calculation(
@@ -2324,10 +2326,14 @@ class RTOPSIS(TOPSISAggregationFunction):
 
         performances_US = (alternative_to_improve.drop(labels=["Mean", "Std", str(self.letter)]).to_numpy().copy())
 
+        # Add `epsilon` margin so the solver must strictly overcome the target
+        # R rather than merely match it. SCIP's default feasibility tolerance
+        # (~1e-6) otherwise lets the optimum land a few 1e-7 below target,
+        # which drops the improved alternative one rank below the opponent.
         target_performances_US = nonlinear_post_factum_scip(
             performances_US=performances_US,
             weights=self.wmsd_transformer.weights,
-            target_R_value=alternative_to_overcome[str(self.letter)],
+            target_R_value=alternative_to_overcome[str(self.letter)] + epsilon,
             excluded_criteria_indices=excluded_criteria_indices,
             constant_WM=constant_WM,
         )

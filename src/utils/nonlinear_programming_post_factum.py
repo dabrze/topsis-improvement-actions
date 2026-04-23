@@ -66,10 +66,15 @@ def nonlinear_post_factum_scip(performances_US, weights, target_R_value, exclude
             model.addCons(abs(x[idx] - performances_VS[idx]) <= 1e-15, f"Exclude_Criterion_{idx}_Constraint")
 
         if constant_WM:
-            # Constraints for `Retaining WM` method
-            old_mean, old_variance = calculate_mean_and_variance(performances_VS)
-            new_mean, new_variance = calculate_mean_and_variance(x)
-            model.addCons(old_mean == new_mean, "Constant_WM_Constraint")
+            # Constraints for `Retaining WM` method.
+            # Note: put the SCIP expression on the left-hand side of ==. If a
+            # numpy scalar is on the left, numpy's __eq__ fires first and
+            # short-circuits to bool, which PySCIPOpt then rejects with
+            # "Can't evaluate constraints as booleans". Casting to float adds
+            # a second layer of safety.
+            old_mean, _old_variance = calculate_mean_and_variance(performances_VS)
+            new_mean, _new_variance = calculate_mean_and_variance(x)
+            model.addCons(new_mean == float(old_mean), "Constant_WM_Constraint")
 
         # Objective function: Minimize Euclidean distance between current_performances and target performances
         # SCIP does not support nonlinear objective functions, so we need to reformulate the problem by moving the objective into a constraint.
