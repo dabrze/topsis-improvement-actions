@@ -2,21 +2,19 @@ import numpy as np
 import pyscipopt as scip
 
 
+DEFAULT_TIME_LIMIT = 6
+
+
 def calculate_mean_and_variance(data):
     n_criteria = len(data)
     if n_criteria == 0:
-        return None, None  # Handle empty list
+        return None, None
     if n_criteria == 1:
-        return data[0], 0  # Standard deviation is 0 for a single element
+        return data[0], 0
 
     mean = sum(data) / n_criteria
-
-    # Calculate the sum of squared differences from the mean
     squared_differences = [(x - mean) ** 2 for x in data]
-    sum_squared_differences = sum(squared_differences)
-
-    # Calculate the variance
-    variance = sum_squared_differences / n_criteria
+    variance = sum(squared_differences) / n_criteria
 
     return mean, variance
 
@@ -31,67 +29,319 @@ def calculate_topsis_distances(performances, pis, nis):
     return d_pos, d_neg
 
 
-def nonlinear_post_factum_scip(performances_US, weights, target_R_value, excluded_criteria_indices,
-                               constant_WM=False):
-    """
-    performances_US -- performance vector in utility space US (performances are min-max scaled, all criteria are of a gain type)
-    weights -- normalized weights (max of weights == 1)
-    target_R -- expected value of R (TOPSIS Closeness Coefficient)
-    constant_WM  -- set to True for `Retaining WM` method
-    """
+class BaseNLPPostFactum:
+    def __init__(
+        self,
+        current_vector,
+        lower_bounds,
+        upper_bounds,
+        excluded_criteria_indices,
+        constant_wm_coefficients=None,
+        constant_wm_target=None,
+        time_limit=DEFAULT_TIME_LIMIT,
+    ):
+        self.current_vector = np.asarray(current_vector, dtype=float)
+        self.lower_bounds = np.asarray(lower_bounds, dtype=float)
+        self.upper_bounds = np.asarray(upper_bounds, dtype=float)
+        self.excluded_criteria_indices = list(excluded_criteria_indices or [])
+        self.constant_wm_coefficients = (
+            None
+            if constant_wm_coefficients is None
+            else np.asarray(constant_wm_coefficients, dtype=float)
+        )
+        self.constant_wm_target = (
+            None if constant_wm_target is None else float(constant_wm_target)
+        )
+        self.time_limit = time_limit
 
-    n_criteria = len(performances_US)
-    nis = np.zeros(n_criteria)  # negative ideal solution, vector of zeros in VS space
-    pis = np.array(weights)  # positive ideal solution, in VS space it is identical to weights vector
-    performances_US = np.array(performances_US)
-    performances_VS = performances_US * weights  # performances in weighted utility space VS
-    target_performances_US = None
+        if not (
+            len(self.current_vector)
+            == len(self.lower_bounds)
+            == len(self.upper_bounds)
+        ):
+            raise ValueError("Current vector and bounds must have the same length.")
 
-    try:
-        # Create a new model
-        model = scip.Model("Euclidean_Distance_Optimization")
-        model.setParam('limits/time', 6)
+    def add_target_constraint(self, model, x):
+        raise NotImplementedError
+
+    def extract_solution(self, solution_vector):
+        return np.asarray(solution_vector, dtype=float)
+
+    def build_model(self):
+        model = scip.Model("PostFactumNLP")
+        model.setParam("limits/time", self.time_limit)
         model.hideOutput()
 
-        # Define variables
-        x = [model.addVar(vtype="C", lb=nis[idx], ub=pis[idx]) for idx in range(n_criteria)]
+        x = [
+            model.addVar(
+                vtype="C",
+                lb=float(self.lower_bounds[idx]),
+                ub=float(self.upper_bounds[idx]),
+                name=f"x_{idx}",
+            )
+            for idx in range(len(self.current_vector))
+        ]
 
-        # Constraint ensuring achievement of the performance target
-        target_d_pos, target_d_neg = calculate_topsis_distances(x, pis, nis)
-        model.addCons(target_R_value * (scip.sqrt(target_d_pos) + scip.sqrt(target_d_neg)) <= (scip.sqrt(target_d_neg)),
-                      "Target_Constraint")
+        for idx in self.excluded_criteria_indices:
+            model.addCons(
+                x[idx] == float(self.current_vector[idx]),
+                f"Exclude_Criterion_{idx}_Constraint",
+            )
 
-        # Constraints to disable modifications on specific criteria
-        for idx in excluded_criteria_indices:
-            model.addCons(abs(x[idx] - performances_VS[idx]) <= 1e-15, f"Exclude_Criterion_{idx}_Constraint")
+        if self.constant_wm_coefficients is not None:
+            weighted_mean_expr = (
+                scip.quicksum(
+                    float(coeff) * x[idx]
+                    for idx, coeff in enumerate(self.constant_wm_coefficients)
+                )
+                / len(x)
+            )
+            model.addCons(
+                weighted_mean_expr == float(self.constant_wm_target),
+                "Constant_WM_Constraint",
+            )
 
-        if constant_WM:
-            # Constraints for `Retaining WM` method.
-            # Note: put the SCIP expression on the left-hand side of ==. If a
-            # numpy scalar is on the left, numpy's __eq__ fires first and
-            # short-circuits to bool, which PySCIPOpt then rejects with
-            # "Can't evaluate constraints as booleans". Casting to float adds
-            # a second layer of safety.
-            old_mean, _old_variance = calculate_mean_and_variance(performances_VS)
-            new_mean, _new_variance = calculate_mean_and_variance(x)
-            model.addCons(new_mean == float(old_mean), "Constant_WM_Constraint")
+        self.add_target_constraint(model, x)
 
-        # Objective function: Minimize Euclidean distance between current_performances and target performances
-        # SCIP does not support nonlinear objective functions, so we need to reformulate the problem by moving the objective into a constraint.
-        objective_variable = model.addVar(vtype="C", lb=0)
+        objective_variable = model.addVar(vtype="C", lb=0, name="objective")
         model.setObjective(objective_variable, sense="minimize")
-        objective_variable_constraint = scip.quicksum((x[idx] - performances_VS[idx]) ** 2 for idx in range(n_criteria))
-        model.addCons(objective_variable >= objective_variable_constraint)
+        objective_expr = scip.quicksum(
+            (x[idx] - float(self.current_vector[idx])) ** 2
+            for idx in range(len(self.current_vector))
+        )
+        model.addCons(objective_variable >= objective_expr, "Objective_Constraint")
 
-        # Optimize the model
+        return model, x
+
+    def solve(self):
+        model, x = self.build_model()
         model.optimize()
 
-        # Print the solution if found
-        if model.getStatus() == "optimal":
-            target_performances_VS = np.array([model.getVal(var) for var in x])
-            target_performances_US = target_performances_VS / weights
+        if model.getStatus() != "optimal":
+            return None
 
-    except Exception as e:
-        print(f"An error occurred: {e}")
+        solution = np.array([model.getVal(var) for var in x], dtype=float)
+        return self.extract_solution(solution)
 
-    return target_performances_US
+
+class UtilitySpaceNLPPostFactum(BaseNLPPostFactum):
+    def __init__(
+        self,
+        performances_US,
+        weights,
+        target_score,
+        excluded_criteria_indices,
+        upper_bounds_US=None,
+        constant_WM=False,
+        time_limit=DEFAULT_TIME_LIMIT,
+    ):
+        self.performances_US = np.asarray(performances_US, dtype=float)
+        self.weights = np.asarray(weights, dtype=float)
+        self.target_score = float(target_score)
+
+        if upper_bounds_US is None:
+            upper_bounds_US = np.ones_like(self.performances_US, dtype=float)
+
+        constant_wm_coefficients = None
+        constant_wm_target = None
+        if constant_WM:
+            constant_wm_coefficients = self.weights
+            constant_wm_target = np.mean(self.weights * self.performances_US)
+
+        super().__init__(
+            current_vector=self.performances_US,
+            lower_bounds=np.zeros_like(self.performances_US, dtype=float),
+            upper_bounds=np.asarray(upper_bounds_US, dtype=float),
+            excluded_criteria_indices=excluded_criteria_indices,
+            constant_wm_coefficients=constant_wm_coefficients,
+            constant_wm_target=constant_wm_target,
+            time_limit=time_limit,
+        )
+
+    def build_score_expression(self, x):
+        raise NotImplementedError
+
+    def add_target_constraint(self, model, x):
+        model.addCons(
+            self.build_score_expression(x) >= float(self.target_score),
+            "Target_Constraint",
+        )
+
+
+class TopsisNLPPostFactum(BaseNLPPostFactum):
+    def __init__(
+        self,
+        performances_US,
+        weights,
+        target_R_value,
+        excluded_criteria_indices,
+        upper_bounds_US=None,
+        constant_WM=False,
+        time_limit=DEFAULT_TIME_LIMIT,
+    ):
+        self.performances_US = np.asarray(performances_US, dtype=float)
+        self.weights = np.asarray(weights, dtype=float)
+        self.target_R_value = float(target_R_value)
+
+        if upper_bounds_US is None:
+            upper_bounds_US = np.ones_like(self.performances_US, dtype=float)
+
+        performances_VS = self.performances_US * self.weights
+        upper_bounds_VS = np.asarray(upper_bounds_US, dtype=float) * self.weights
+
+        constant_wm_coefficients = None
+        constant_wm_target = None
+        if constant_WM:
+            constant_wm_coefficients = np.ones_like(self.weights, dtype=float)
+            constant_wm_target = np.mean(performances_VS)
+
+        super().__init__(
+            current_vector=performances_VS,
+            lower_bounds=np.zeros_like(performances_VS, dtype=float),
+            upper_bounds=upper_bounds_VS,
+            excluded_criteria_indices=excluded_criteria_indices,
+            constant_wm_coefficients=constant_wm_coefficients,
+            constant_wm_target=constant_wm_target,
+            time_limit=time_limit,
+        )
+
+    def add_target_constraint(self, model, x):
+        nis = np.zeros(len(self.weights), dtype=float)
+        target_d_pos, target_d_neg = calculate_topsis_distances(x, self.weights, nis)
+        model.addCons(
+            self.target_R_value
+            * (scip.sqrt(target_d_pos) + scip.sqrt(target_d_neg))
+            <= scip.sqrt(target_d_neg),
+            "Target_Constraint",
+        )
+
+    def extract_solution(self, solution_vector):
+        result = self.performances_US.copy()
+        positive_weights = self.weights > 0
+        result[positive_weights] = (
+            solution_vector[positive_weights] / self.weights[positive_weights]
+        )
+        return result
+
+
+class SAWNLPPostFactum(UtilitySpaceNLPPostFactum):
+    def build_score_expression(self, x):
+        return scip.quicksum(
+            float(weight) * x[idx] for idx, weight in enumerate(self.weights)
+        )
+
+
+class ARASNLPPostFactum(UtilitySpaceNLPPostFactum):
+    def build_score_expression(self, x):
+        weight_sum = float(np.sum(self.weights))
+        if weight_sum <= 0:
+            return scip.quicksum(0.0 * var for var in x)
+        normalized_weights = self.weights / weight_sum
+        return scip.quicksum(
+            float(weight) * x[idx] for idx, weight in enumerate(normalized_weights)
+        )
+
+
+class COPRASNLPPostFactum(UtilitySpaceNLPPostFactum):
+    def __init__(
+        self,
+        performances_US,
+        weights,
+        objectives,
+        target_score,
+        excluded_criteria_indices,
+        upper_bounds_US=None,
+        constant_WM=False,
+        time_limit=DEFAULT_TIME_LIMIT,
+    ):
+        self.objectives = np.asarray(objectives)
+        super().__init__(
+            performances_US=performances_US,
+            weights=weights,
+            target_score=target_score,
+            excluded_criteria_indices=excluded_criteria_indices,
+            upper_bounds_US=upper_bounds_US,
+            constant_WM=constant_WM,
+            time_limit=time_limit,
+        )
+
+    def add_target_constraint(self, model, x):
+        gain_indices = np.where(self.objectives == "max")[0]
+        cost_indices = np.where(self.objectives == "min")[0]
+
+        sp = scip.quicksum(float(self.weights[idx]) * x[idx] for idx in gain_indices)
+        if len(cost_indices) == 0:
+            model.addCons(sp >= float(self.target_score), "Target_Constraint")
+            return
+
+        sm = scip.quicksum(
+            float(self.weights[idx]) * (1 - x[idx]) for idx in cost_indices
+        )
+        model.addCons(
+            sp >= float(self.target_score) * sm,
+            "Target_Constraint",
+        )
+
+
+class WASPASNLPPostFactum(UtilitySpaceNLPPostFactum):
+    def __init__(
+        self,
+        performances_US,
+        weights,
+        target_score,
+        excluded_criteria_indices,
+        upper_bounds_US=None,
+        constant_WM=False,
+        lam=0.5,
+        time_limit=DEFAULT_TIME_LIMIT,
+    ):
+        self.lam = float(lam)
+        super().__init__(
+            performances_US=performances_US,
+            weights=weights,
+            target_score=target_score,
+            excluded_criteria_indices=excluded_criteria_indices,
+            upper_bounds_US=upper_bounds_US,
+            constant_WM=constant_WM,
+            time_limit=time_limit,
+        )
+
+    def build_score_expression(self, x):
+        weight_sum = float(np.sum(self.weights))
+        if weight_sum <= 0:
+            return scip.quicksum(0.0 * var for var in x)
+
+        normalized_weights = self.weights / weight_sum
+        q_sum = scip.quicksum(
+            float(weight) * x[idx] for idx, weight in enumerate(normalized_weights)
+        )
+        q_prod = None
+        for idx, weight in enumerate(normalized_weights):
+            if weight <= 0:
+                continue
+            term = x[idx] ** float(weight)
+            q_prod = term if q_prod is None else q_prod * term
+
+        if q_prod is None:
+            q_prod = scip.quicksum(0.0 * var for var in x)
+
+        return self.lam * q_sum + (1 - self.lam) * q_prod
+
+
+def nonlinear_post_factum_scip(
+    performances_US,
+    weights,
+    target_R_value,
+    excluded_criteria_indices,
+    constant_WM=False,
+    upper_bounds_US=None,
+):
+    solver = TopsisNLPPostFactum(
+        performances_US=performances_US,
+        weights=weights,
+        target_R_value=target_R_value,
+        excluded_criteria_indices=excluded_criteria_indices,
+        upper_bounds_US=upper_bounds_US,
+        constant_WM=constant_WM,
+    )
+    return solver.solve()

@@ -16,7 +16,13 @@ from pymoo.core.callback import Callback
 from tqdm import tqdm
 from joblib import Parallel, delayed
 
-from utils.nonlinear_programming_post_factum import nonlinear_post_factum_scip
+from utils.nonlinear_programming_post_factum import (
+    ARASNLPPostFactum,
+    COPRASNLPPostFactum,
+    SAWNLPPostFactum,
+    TopsisNLPPostFactum,
+    WASPASNLPPostFactum,
+)
 from utils.population_reduction import reduce_population_agglomerative_clustering
 from utils.single_criterion_exact_improvement import solve_quadratic_equation, choose_appropriate_solution
 
@@ -1155,6 +1161,90 @@ class AggregationFunction(ABC):
         """Calculates aggregation scores for normalized alternatives."""
         pass
 
+    def build_nlp_solver(
+        self,
+        performances_US,
+        target_score,
+        excluded_criteria_indices,
+        upper_bounds_US,
+        constant_WM=False,
+    ):
+        raise NotImplementedError(
+            f"Non-linear programming is not supported for aggregation '{self.letter}'."
+        )
+
+    def _convert_us_solution_to_modifications(
+        self,
+        original_performances_US,
+        target_performances_US,
+    ):
+        value_range = np.asarray(self.wmsd_transformer._value_range, dtype=float)
+        performance_modifications = (
+            np.asarray(target_performances_US, dtype=float)
+            - np.asarray(original_performances_US, dtype=float)
+        ) * value_range
+        performance_modifications = performance_modifications.astype(float)
+        performance_modifications[
+            np.asarray(self.wmsd_transformer.objectives) == "min"
+        ] *= -1
+        return pd.DataFrame(
+            [performance_modifications],
+            columns=self.wmsd_transformer.X.columns,
+        )
+
+    def improvement_non_linear_programming(
+        self,
+        alternative_to_improve,
+        alternative_to_overcome,
+        epsilon,
+        features_to_change,
+        boundary_values=None,
+        constant_WM=False,
+        **kwargs,
+    ):
+        if alternative_to_improve[str(self.letter)] >= alternative_to_overcome[str(self.letter)]:
+            raise ValueError(
+                "Invalid value at 'alternative_to_improve': must be worse than alternative_to_overcome'"
+            )
+
+        self.__check_epsilon(epsilon, self.wmsd_transformer.weights)
+        boundary_values = self.__check_boundary_values(
+            alternative_to_improve, features_to_change, boundary_values
+        )
+
+        criteria_columns = self.wmsd_transformer.X.columns.tolist()
+        performances_US = (
+            alternative_to_improve.loc[self.wmsd_transformer.X.columns]
+            .to_numpy()
+            .copy()
+        )
+
+        excluded_criteria_indices = [
+            idx
+            for idx, name in enumerate(criteria_columns)
+            if name not in features_to_change
+        ]
+        upper_bounds_US = np.ones_like(performances_US, dtype=float)
+        for feature_name, boundary in zip(features_to_change, boundary_values):
+            upper_bounds_US[criteria_columns.index(feature_name)] = boundary
+
+        solver = self.build_nlp_solver(
+            performances_US=performances_US,
+            target_score=alternative_to_overcome[str(self.letter)] + epsilon,
+            excluded_criteria_indices=excluded_criteria_indices,
+            upper_bounds_US=upper_bounds_US,
+            constant_WM=constant_WM,
+        )
+        target_performances_US = solver.solve()
+
+        if target_performances_US is None:
+            return None
+
+        return self._convert_us_solution_to_modifications(
+            original_performances_US=performances_US,
+            target_performances_US=np.clip(target_performances_US, 0.0, 1.0),
+        )
+
     def improvement_single_feature(
         self,
         alternative_to_improve,
@@ -1824,6 +1914,59 @@ class TOPSISAggregationFunction(WMSDAggregationFunction):
         else:
             return None, None
 
+    def improvement_non_linear_programming(
+        self,
+        alternative_to_improve,
+        alternative_to_overcome,
+        epsilon,
+        features_to_change,
+        boundary_values=None,
+        constant_WM=False,
+        **kwargs,
+    ):
+        if alternative_to_improve[str(self.letter)] >= alternative_to_overcome[str(self.letter)]:
+            raise ValueError(
+                "Invalid value at 'alternative_to_improve': must be worse than alternative_to_overcome'"
+            )
+
+        self.__check_epsilon(epsilon, self.wmsd_transformer.weights)
+        boundary_values = self.__check_boundary_values(
+            alternative_to_improve, features_to_change, boundary_values
+        )
+
+        criteria_columns = self.wmsd_transformer.X.columns.tolist()
+        performances_US = (
+            alternative_to_improve.loc[self.wmsd_transformer.X.columns]
+            .to_numpy()
+            .copy()
+        )
+
+        excluded_criteria_indices = [
+            idx
+            for idx, name in enumerate(criteria_columns)
+            if name not in features_to_change
+        ]
+        upper_bounds_US = np.ones_like(performances_US, dtype=float)
+        for feature_name, boundary in zip(features_to_change, boundary_values):
+            upper_bounds_US[criteria_columns.index(feature_name)] = boundary
+
+        solver = self.build_nlp_solver(
+            performances_US=performances_US,
+            target_score=alternative_to_overcome[str(self.letter)] + epsilon,
+            excluded_criteria_indices=excluded_criteria_indices,
+            upper_bounds_US=upper_bounds_US,
+            constant_WM=constant_WM,
+        )
+        target_performances_US = solver.solve()
+
+        if target_performances_US is None:
+            return None
+
+        return self._convert_us_solution_to_modifications(
+            original_performances_US=performances_US,
+            target_performances_US=np.clip(target_performances_US, 0.0, 1.0),
+        )
+
 
 class TqdmProgressBar(tqdm):
     def update_to(self, current, total):
@@ -1933,6 +2076,23 @@ class SAW(AggregationFunction):
         normalized_matrix = np.atleast_2d(np.asarray(normalized_matrix, dtype=float))
         return normalized_matrix @ np.asarray(self.wmsd_transformer.weights, dtype=float)
 
+    def build_nlp_solver(
+        self,
+        performances_US,
+        target_score,
+        excluded_criteria_indices,
+        upper_bounds_US,
+        constant_WM=False,
+    ):
+        return SAWNLPPostFactum(
+            performances_US=performances_US,
+            weights=self.wmsd_transformer.weights,
+            target_score=target_score,
+            excluded_criteria_indices=excluded_criteria_indices,
+            upper_bounds_US=upper_bounds_US,
+            constant_WM=constant_WM,
+        )
+
     def improvement_single_feature(
         self,
         alternative_to_improve,
@@ -1990,6 +2150,23 @@ class ARAS(AggregationFunction):
         if weight_sum == 0:
             return np.zeros(normalized_matrix.shape[0], dtype=float)
         return (normalized_matrix @ weights) / weight_sum
+
+    def build_nlp_solver(
+        self,
+        performances_US,
+        target_score,
+        excluded_criteria_indices,
+        upper_bounds_US,
+        constant_WM=False,
+    ):
+        return ARASNLPPostFactum(
+            performances_US=performances_US,
+            weights=self.wmsd_transformer.weights,
+            target_score=target_score,
+            excluded_criteria_indices=excluded_criteria_indices,
+            upper_bounds_US=upper_bounds_US,
+            constant_WM=constant_WM,
+        )
 
     def improvement_single_feature(
         self,
@@ -2062,6 +2239,24 @@ class COPRAS(AggregationFunction):
         sm = np.maximum(sm, 1e-12)
         return sp / sm
 
+    def build_nlp_solver(
+        self,
+        performances_US,
+        target_score,
+        excluded_criteria_indices,
+        upper_bounds_US,
+        constant_WM=False,
+    ):
+        return COPRASNLPPostFactum(
+            performances_US=performances_US,
+            weights=self.wmsd_transformer.weights,
+            objectives=self.wmsd_transformer.objectives,
+            target_score=target_score,
+            excluded_criteria_indices=excluded_criteria_indices,
+            upper_bounds_US=upper_bounds_US,
+            constant_WM=constant_WM,
+        )
+
 
 class WASPAS(AggregationFunction):
     """Weighted Aggregated Sum Product Assessment on normalized utility data."""
@@ -2082,6 +2277,24 @@ class WASPAS(AggregationFunction):
         q_sum = np.sum(normalized_matrix * normalized_weights, axis=1)
         q_prod = np.prod(normalized_matrix ** normalized_weights, axis=1)
         return self.lam * q_sum + (1 - self.lam) * q_prod
+
+    def build_nlp_solver(
+        self,
+        performances_US,
+        target_score,
+        excluded_criteria_indices,
+        upper_bounds_US,
+        constant_WM=False,
+    ):
+        return WASPASNLPPostFactum(
+            performances_US=performances_US,
+            weights=self.wmsd_transformer.weights,
+            target_score=target_score,
+            excluded_criteria_indices=excluded_criteria_indices,
+            upper_bounds_US=upper_bounds_US,
+            constant_WM=constant_WM,
+            lam=self.lam,
+        )
 
 
 class ATOPSIS(TOPSISAggregationFunction):
@@ -2550,6 +2763,23 @@ class RTOPSIS(TOPSISAggregationFunction):
             np.sqrt(wm * wm + wsd * wsd) + np.sqrt((w - wm) * (w - wm) + wsd * wsd)
         )
 
+    def build_nlp_solver(
+        self,
+        performances_US,
+        target_score,
+        excluded_criteria_indices,
+        upper_bounds_US,
+        constant_WM=False,
+    ):
+        return TopsisNLPPostFactum(
+            performances_US=performances_US,
+            weights=self.wmsd_transformer.weights,
+            target_R_value=target_score,
+            excluded_criteria_indices=excluded_criteria_indices,
+            upper_bounds_US=upper_bounds_US,
+            constant_WM=constant_WM,
+        )
+
     def improvement_single_feature(
         self,
         alternative_to_improve,
@@ -2701,31 +2931,15 @@ class RTOPSIS(TOPSISAggregationFunction):
         -------
         Calculated minimum change on given criteria.
         """
-
-        excluded_criteria_indices = []
-        for idx, name in enumerate(self.wmsd_transformer.X.columns.tolist()):
-            if name not in features_to_change:
-                excluded_criteria_indices.append(idx)
-
-        performances_US = (alternative_to_improve.drop(labels=["Mean", "Std", str(self.letter)]).to_numpy().copy())
-
-        # Add `epsilon` margin so the solver must strictly overcome the target
-        # R rather than merely match it. SCIP's default feasibility tolerance
-        # (~1e-6) otherwise lets the optimum land a few 1e-7 below target,
-        # which drops the improved alternative one rank below the opponent.
-        target_performances_US = nonlinear_post_factum_scip(
-            performances_US=performances_US,
-            weights=self.wmsd_transformer.weights,
-            target_R_value=alternative_to_overcome[str(self.letter)] + epsilon,
-            excluded_criteria_indices=excluded_criteria_indices,
+        return super().improvement_non_linear_programming(
+            alternative_to_improve=alternative_to_improve,
+            alternative_to_overcome=alternative_to_overcome,
+            epsilon=epsilon,
+            features_to_change=features_to_change,
+            boundary_values=boundary_values,
             constant_WM=constant_WM,
+            **kwargs,
         )
-
-        if target_performances_US is None:
-            # print("Not possible to achieve target")
-            return None
-        else:
-            return pd.DataFrame([(np.array(target_performances_US) - performances_US) * self.wmsd_transformer._value_range], columns=self.wmsd_transformer.X.columns)
 
 
     def improvement_std(

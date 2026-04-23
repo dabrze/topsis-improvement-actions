@@ -7,17 +7,17 @@ This repository contains the Python implementation of the post-factum analysis (
 
 The library now also exposes score-based non-TOPSIS aggregations:
 
-| Method | Constructor | Score column | Direct / ordered / genetic | WMSD plot / mean / std / NLP |
-| --- | --- | --- | --- | --- |
-| SAW | `WMSDTransformer(SAW)` or `"U"` | `U` | Yes | No |
-| ARAS | `WMSDTransformer(ARAS)` or `"K"` | `K` | Yes | No |
-| COPRAS | `WMSDTransformer(COPRAS)` or `"C"` | `C` | Yes | No |
-| WASPAS | `WMSDTransformer(WASPAS)` or `"W"` | `W` | Yes | No |
-| RTOPSIS | `WMSDTransformer(RTOPSIS)` or `"R"` | `R` | Yes | Yes |
-| ATOPSIS | `WMSDTransformer(ATOPSIS)` or `"A"` | `A` | Yes | Yes |
-| ITOPSIS | `WMSDTransformer(ITOPSIS)` or `"I"` | `I` | Yes | Yes |
+| Method | Constructor | Score column | Direct / ordered / genetic | Exact NLP | WMSD plot / mean / std |
+| --- | --- | --- | --- | --- | --- |
+| SAW | `WMSDTransformer(SAW)` or `"U"` | `U` | Yes | Yes | No |
+| ARAS | `WMSDTransformer(ARAS)` or `"K"` | `K` | Yes | Yes | No |
+| COPRAS | `WMSDTransformer(COPRAS)` or `"C"` | `C` | Yes | Yes | No |
+| WASPAS | `WMSDTransformer(WASPAS)` or `"W"` | `W` | Yes | Yes | No |
+| RTOPSIS | `WMSDTransformer(RTOPSIS)` or `"R"` | `R` | Yes | Yes | Yes |
+| ATOPSIS | `WMSDTransformer(ATOPSIS)` or `"A"` | `A` | Yes | No | Yes |
+| ITOPSIS | `WMSDTransformer(ITOPSIS)` or `"I"` | `I` | Yes | No | Yes |
 
-For non-WMSD methods, the reusable score-driven paths are available: `improvement_single_feature`, `improvement_features`, and `improvement_genetic`. WMSD-only capabilities (`plot`, `plot_improvement`, `improvement_mean`, `improvement_std`, and RTOPSIS nonlinear programming) remain TOPSIS-family only.
+For non-WMSD methods, the reusable score-driven paths now include `improvement_non_linear_programming` in addition to `improvement_single_feature`, `improvement_features`, and `improvement_genetic`. WMSD-only capabilities (`plot`, `plot_improvement`, `improvement_mean`, and `improvement_std`) remain TOPSIS-family only.
 
 
 # Table of contents
