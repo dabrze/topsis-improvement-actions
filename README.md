@@ -13,11 +13,15 @@ The library now also exposes score-based non-TOPSIS aggregations:
 | ARAS | `WMSDTransformer(ARAS)` or `"K"` | `K` | Yes | Yes | No |
 | COPRAS | `WMSDTransformer(COPRAS)` or `"C"` | `C` | Yes | Yes | No |
 | WASPAS | `WMSDTransformer(WASPAS)` or `"W"` | `W` | Yes | Yes | No |
+| VIKOR | `WMSDTransformer(VIKOR)` or `"V"` | `V` | Yes | Yes | No |
 | RTOPSIS | `WMSDTransformer(RTOPSIS)` or `"R"` | `R` | Yes | Yes | Yes |
 | ATOPSIS | `WMSDTransformer(ATOPSIS)` or `"A"` | `A` | Yes | No | Yes |
 | ITOPSIS | `WMSDTransformer(ITOPSIS)` or `"I"` | `I` | Yes | No | Yes |
+| Fuzzy TOPSIS | `FuzzyTOPSIS()` or `FTOPSIS()` | `F` | Genetic only | Yes | No |
 
 For non-WMSD methods, the reusable score-driven paths now include `improvement_non_linear_programming` in addition to `improvement_single_feature`, `improvement_features`, and `improvement_genetic`. WMSD-only capabilities (`plot`, `plot_improvement`, `improvement_mean`, and `improvement_std`) remain TOPSIS-family only.
+
+The first Fuzzy TOPSIS release is **library-only**. It accepts triangular fuzzy numbers either as tuple-valued criterion cells `(l, m, u)` or as flat columns named `<criterion>_l`, `<criterion>_m`, `<criterion>_u`. At this stage the supported post-factum paths are `improvement_genetic` and `improvement_non_linear_programming`; other fuzzy-specific improvement strategies remain future work.
 
 
 # Table of contents
@@ -45,6 +49,31 @@ identify how to modify alternatives to improve their TOPSIS ranking. A schematic
 ![Transformed data frame](notebooks/figures/topsis_post_factum_flow_diagram_db.png)
 
 In the following sections, we will demonstrate how to use the PFA framework to improve the ranking of a specific alternative in an example dataset.
+
+### Fuzzy TOPSIS quick start
+
+```python
+import pandas as pd
+from WMSDTransformer import FuzzyTOPSIS
+
+fuzzy_dataset = pd.DataFrame(
+    {
+        "Quality": [(3, 4, 5), (4, 5, 6), (2, 3, 4)],
+        "Cost": [(5, 6, 7), (4, 5, 6), (6, 7, 8)],
+    },
+    index=["A1", "A2", "A3"],
+)
+
+fuzzy_topsis = FuzzyTOPSIS()
+result_df = fuzzy_topsis.fit_transform(
+    fuzzy_dataset,
+    weights=[0.6, 0.4],
+    objectives=["max", "min"],
+)
+display(fuzzy_topsis.return_ranking(normalized=False))
+```
+
+This first version focuses on fuzzy ranking plus genetic and exact-NLP post-factum search paths.
 
 
 ## Example dataset

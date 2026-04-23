@@ -11,6 +11,7 @@ METHOD_CASES = {
     "ARAS": {"dataset": "students", "source_rank": 4, "target_rank": 2},
     "COPRAS": {"dataset": "students", "source_rank": 3, "target_rank": 2},
     "WASPAS": {"dataset": "students", "source_rank": 3, "target_rank": 2},
+    "VIKOR": {"dataset": "students", "source_rank": 3, "target_rank": 2},
 }
 
 
