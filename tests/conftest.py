@@ -17,7 +17,7 @@ BASELINE_REVISION = "e43b384e0c90684063e76ddcff7cdad9db628e23"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-import WMSDTransformer as current_module  # noqa: E402
+import wmsd as current_module  # noqa: E402
 
 
 DATASET_CASES = {

@@ -1,0 +1,32 @@
+{
+  "config": {
+    "ablation": true,
+    "alphas": [
+      0.0,
+      0.25,
+      0.5
+    ],
+    "focal": "Politechnika Poznanska",
+    "pairs": [
+      [
+        2022,
+        2023
+      ],
+      [
+        2023,
+        2024
+      ],
+      [
+        2024,
+        2025
+      ],
+      [
+        2025,
+        2026
+      ]
+    ]
+  },
+  "git_commit": "97a2a6e0136dac7ad970a12a76b3990059c5d6f0",
+  "script": "D:\\Praca\\Uczelnia\\Praca naukowa\\Github\\improvement-actions\\topsis-msd-improvement-actions\\experiments\\perspektywy\\e2_plan_vs_reality.py",
+  "timestamp": "2026-07-16T09:50:35.296949+00:00"
+}

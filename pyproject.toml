@@ -56,4 +56,4 @@ py-modules = ["WMSDTransformer"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["utils*"]
+include = ["utils*", "wmsd*"]

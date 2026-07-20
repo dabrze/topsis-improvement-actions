@@ -1,0 +1,11 @@
+{
+  "config": {
+    "epsilon": 1e-06,
+    "focal": "Politechnika Poznanska",
+    "quick": false,
+    "year": 2025
+  },
+  "git_commit": "97a2a6e0136dac7ad970a12a76b3990059c5d6f0",
+  "script": "D:\\Praca\\Uczelnia\\Praca naukowa\\Github\\improvement-actions\\topsis-msd-improvement-actions\\experiments\\perspektywy\\e1_walkthrough.py",
+  "timestamp": "2026-07-16T09:42:59.711453+00:00"
+}

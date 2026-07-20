@@ -1,0 +1,757 @@
+year,next_year,pair,university,k,target_rank,scenario,achieved_rank,survived
+2022,2023,2022→2023,AGH,1,1,full,1,True
+2022,2023,2022→2023,AGH,1,1,values_only,1,True
+2022,2023,2022→2023,AGH,1,1,weights_only,1,True
+2022,2023,2022→2023,Politechnika Gdanska,1,2,full,2,True
+2022,2023,2022→2023,Politechnika Gdanska,1,2,values_only,2,True
+2022,2023,2022→2023,Politechnika Gdanska,1,2,weights_only,2,True
+2022,2023,2022→2023,Politechnika Gdanska,2,1,full,1,True
+2022,2023,2022→2023,Politechnika Gdanska,2,1,values_only,1,True
+2022,2023,2022→2023,Politechnika Gdanska,2,1,weights_only,1,True
+2022,2023,2022→2023,Politechnika Wroclawska,1,3,full,2,True
+2022,2023,2022→2023,Politechnika Wroclawska,1,3,values_only,2,True
+2022,2023,2022→2023,Politechnika Wroclawska,1,3,weights_only,3,True
+2022,2023,2022→2023,Politechnika Wroclawska,2,2,full,2,True
+2022,2023,2022→2023,Politechnika Wroclawska,2,2,values_only,2,True
+2022,2023,2022→2023,Politechnika Wroclawska,2,2,weights_only,2,True
+2022,2023,2022→2023,Politechnika Wroclawska,3,1,full,1,True
+2022,2023,2022→2023,Politechnika Wroclawska,3,1,values_only,1,True
+2022,2023,2022→2023,Politechnika Wroclawska,3,1,weights_only,1,True
+2022,2023,2022→2023,Politechnika Lodzka,1,4,full,4,True
+2022,2023,2022→2023,Politechnika Lodzka,1,4,values_only,4,True
+2022,2023,2022→2023,Politechnika Lodzka,1,4,weights_only,4,True
+2022,2023,2022→2023,Politechnika Lodzka,2,3,full,2,True
+2022,2023,2022→2023,Politechnika Lodzka,2,3,values_only,2,True
+2022,2023,2022→2023,Politechnika Lodzka,2,3,weights_only,3,True
+2022,2023,2022→2023,Politechnika Lodzka,3,2,full,2,True
+2022,2023,2022→2023,Politechnika Lodzka,3,2,values_only,2,True
+2022,2023,2022→2023,Politechnika Lodzka,3,2,weights_only,2,True
+2022,2023,2022→2023,Politechnika Slaska,1,5,full,4,True
+2022,2023,2022→2023,Politechnika Slaska,1,5,values_only,4,True
+2022,2023,2022→2023,Politechnika Slaska,1,5,weights_only,5,True
+2022,2023,2022→2023,Politechnika Slaska,2,4,full,4,True
+2022,2023,2022→2023,Politechnika Slaska,2,4,values_only,4,True
+2022,2023,2022→2023,Politechnika Slaska,2,4,weights_only,4,True
+2022,2023,2022→2023,Politechnika Slaska,3,3,full,2,True
+2022,2023,2022→2023,Politechnika Slaska,3,3,values_only,2,True
+2022,2023,2022→2023,Politechnika Slaska,3,3,weights_only,3,True
+2022,2023,2022→2023,Politechnika Poznanska,1,6,full,5,True
+2022,2023,2022→2023,Politechnika Poznanska,1,6,values_only,5,True
+2022,2023,2022→2023,Politechnika Poznanska,1,6,weights_only,6,True
+2022,2023,2022→2023,Politechnika Poznanska,2,5,full,4,True
+2022,2023,2022→2023,Politechnika Poznanska,2,5,values_only,4,True
+2022,2023,2022→2023,Politechnika Poznanska,2,5,weights_only,5,True
+2022,2023,2022→2023,Politechnika Poznanska,3,4,full,4,True
+2022,2023,2022→2023,Politechnika Poznanska,3,4,values_only,4,True
+2022,2023,2022→2023,Politechnika Poznanska,3,4,weights_only,4,True
+2022,2023,2022→2023,PJATK,1,7,full,7,True
+2022,2023,2022→2023,PJATK,1,7,values_only,7,True
+2022,2023,2022→2023,PJATK,1,7,weights_only,7,True
+2022,2023,2022→2023,PJATK,2,6,full,6,True
+2022,2023,2022→2023,PJATK,2,6,values_only,6,True
+2022,2023,2022→2023,PJATK,2,6,weights_only,6,True
+2022,2023,2022→2023,PJATK,3,5,full,4,True
+2022,2023,2022→2023,PJATK,3,5,values_only,4,True
+2022,2023,2022→2023,PJATK,3,5,weights_only,5,True
+2022,2023,2022→2023,Politechnika Czestochowska,1,8,full,8,True
+2022,2023,2022→2023,Politechnika Czestochowska,1,8,values_only,8,True
+2022,2023,2022→2023,Politechnika Czestochowska,1,8,weights_only,8,True
+2022,2023,2022→2023,Politechnika Czestochowska,2,7,full,7,True
+2022,2023,2022→2023,Politechnika Czestochowska,2,7,values_only,7,True
+2022,2023,2022→2023,Politechnika Czestochowska,2,7,weights_only,7,True
+2022,2023,2022→2023,Politechnika Czestochowska,3,6,full,6,True
+2022,2023,2022→2023,Politechnika Czestochowska,3,6,values_only,6,True
+2022,2023,2022→2023,Politechnika Czestochowska,3,6,weights_only,6,True
+2022,2023,2022→2023,Politechnika Krakowska,1,9,full,8,True
+2022,2023,2022→2023,Politechnika Krakowska,1,9,values_only,8,True
+2022,2023,2022→2023,Politechnika Krakowska,1,9,weights_only,9,True
+2022,2023,2022→2023,Politechnika Krakowska,2,8,full,8,True
+2022,2023,2022→2023,Politechnika Krakowska,2,8,values_only,8,True
+2022,2023,2022→2023,Politechnika Krakowska,2,8,weights_only,8,True
+2022,2023,2022→2023,Politechnika Krakowska,3,7,full,7,True
+2022,2023,2022→2023,Politechnika Krakowska,3,7,values_only,7,True
+2022,2023,2022→2023,Politechnika Krakowska,3,7,weights_only,7,True
+2022,2023,2022→2023,Politechnika Lubelska,1,10,full,9,True
+2022,2023,2022→2023,Politechnika Lubelska,1,10,values_only,9,True
+2022,2023,2022→2023,Politechnika Lubelska,1,10,weights_only,10,True
+2022,2023,2022→2023,Politechnika Lubelska,2,9,full,8,True
+2022,2023,2022→2023,Politechnika Lubelska,2,9,values_only,8,True
+2022,2023,2022→2023,Politechnika Lubelska,2,9,weights_only,9,True
+2022,2023,2022→2023,Politechnika Lubelska,3,8,full,8,True
+2022,2023,2022→2023,Politechnika Lubelska,3,8,values_only,8,True
+2022,2023,2022→2023,Politechnika Lubelska,3,8,weights_only,8,True
+2022,2023,2022→2023,ZUT,1,11,full,9,True
+2022,2023,2022→2023,ZUT,1,11,values_only,9,True
+2022,2023,2022→2023,ZUT,1,11,weights_only,11,True
+2022,2023,2022→2023,ZUT,2,10,full,9,True
+2022,2023,2022→2023,ZUT,2,10,values_only,9,True
+2022,2023,2022→2023,ZUT,2,10,weights_only,10,True
+2022,2023,2022→2023,ZUT,3,9,full,8,True
+2022,2023,2022→2023,ZUT,3,9,values_only,8,True
+2022,2023,2022→2023,ZUT,3,9,weights_only,9,True
+2022,2023,2022→2023,WAT,1,12,full,11,True
+2022,2023,2022→2023,WAT,1,12,values_only,11,True
+2022,2023,2022→2023,WAT,1,12,weights_only,12,True
+2022,2023,2022→2023,WAT,2,11,full,9,True
+2022,2023,2022→2023,WAT,2,11,values_only,9,True
+2022,2023,2022→2023,WAT,2,11,weights_only,11,True
+2022,2023,2022→2023,WAT,3,10,full,9,True
+2022,2023,2022→2023,WAT,3,10,values_only,9,True
+2022,2023,2022→2023,WAT,3,10,weights_only,10,True
+2022,2023,2022→2023,Politechnika Bialostocka,1,13,full,16,False
+2022,2023,2022→2023,Politechnika Bialostocka,1,13,values_only,16,False
+2022,2023,2022→2023,Politechnika Bialostocka,1,13,weights_only,13,True
+2022,2023,2022→2023,Politechnika Bialostocka,2,12,full,12,True
+2022,2023,2022→2023,Politechnika Bialostocka,2,12,values_only,12,True
+2022,2023,2022→2023,Politechnika Bialostocka,2,12,weights_only,12,True
+2022,2023,2022→2023,Politechnika Bialostocka,3,11,full,9,True
+2022,2023,2022→2023,Politechnika Bialostocka,3,11,values_only,9,True
+2022,2023,2022→2023,Politechnika Bialostocka,3,11,weights_only,11,True
+2022,2023,2022→2023,Politechnika Swietokrzyska,1,14,full,16,False
+2022,2023,2022→2023,Politechnika Swietokrzyska,1,14,values_only,16,False
+2022,2023,2022→2023,Politechnika Swietokrzyska,1,14,weights_only,14,True
+2022,2023,2022→2023,Politechnika Swietokrzyska,2,13,full,16,False
+2022,2023,2022→2023,Politechnika Swietokrzyska,2,13,values_only,16,False
+2022,2023,2022→2023,Politechnika Swietokrzyska,2,13,weights_only,13,True
+2022,2023,2022→2023,Politechnika Swietokrzyska,3,12,full,12,True
+2022,2023,2022→2023,Politechnika Swietokrzyska,3,12,values_only,12,True
+2022,2023,2022→2023,Politechnika Swietokrzyska,3,12,weights_only,12,True
+2022,2023,2022→2023,Politechnika Opolska,1,15,full,15,True
+2022,2023,2022→2023,Politechnika Opolska,1,15,values_only,15,True
+2022,2023,2022→2023,Politechnika Opolska,1,15,weights_only,15,True
+2022,2023,2022→2023,Politechnika Opolska,2,14,full,15,False
+2022,2023,2022→2023,Politechnika Opolska,2,14,values_only,15,False
+2022,2023,2022→2023,Politechnika Opolska,2,14,weights_only,14,True
+2022,2023,2022→2023,Politechnika Opolska,3,13,full,15,False
+2022,2023,2022→2023,Politechnika Opolska,3,13,values_only,15,False
+2022,2023,2022→2023,Politechnika Opolska,3,13,weights_only,13,True
+2022,2023,2022→2023,Politechnika Rzeszowska,1,16,full,17,False
+2022,2023,2022→2023,Politechnika Rzeszowska,1,16,values_only,17,False
+2022,2023,2022→2023,Politechnika Rzeszowska,1,16,weights_only,16,True
+2022,2023,2022→2023,Politechnika Rzeszowska,2,15,full,16,False
+2022,2023,2022→2023,Politechnika Rzeszowska,2,15,values_only,16,False
+2022,2023,2022→2023,Politechnika Rzeszowska,2,15,weights_only,15,True
+2022,2023,2022→2023,Politechnika Rzeszowska,3,14,full,16,False
+2022,2023,2022→2023,Politechnika Rzeszowska,3,14,values_only,16,False
+2022,2023,2022→2023,Politechnika Rzeszowska,3,14,weights_only,14,True
+2022,2023,2022→2023,Politechnika Bydgoska,1,17,full,17,True
+2022,2023,2022→2023,Politechnika Bydgoska,1,17,values_only,17,True
+2022,2023,2022→2023,Politechnika Bydgoska,1,17,weights_only,17,True
+2022,2023,2022→2023,Politechnika Bydgoska,2,16,full,17,False
+2022,2023,2022→2023,Politechnika Bydgoska,2,16,values_only,17,False
+2022,2023,2022→2023,Politechnika Bydgoska,2,16,weights_only,16,True
+2022,2023,2022→2023,Politechnika Bydgoska,3,15,full,16,False
+2022,2023,2022→2023,Politechnika Bydgoska,3,15,values_only,16,False
+2022,2023,2022→2023,Politechnika Bydgoska,3,15,weights_only,15,True
+2022,2023,2022→2023,Politechnika Koszalinska,1,18,full,18,True
+2022,2023,2022→2023,Politechnika Koszalinska,1,18,values_only,18,True
+2022,2023,2022→2023,Politechnika Koszalinska,1,18,weights_only,18,True
+2022,2023,2022→2023,Politechnika Koszalinska,2,17,full,17,True
+2022,2023,2022→2023,Politechnika Koszalinska,2,17,values_only,17,True
+2022,2023,2022→2023,Politechnika Koszalinska,2,17,weights_only,17,True
+2022,2023,2022→2023,Politechnika Koszalinska,3,16,full,17,False
+2022,2023,2022→2023,Politechnika Koszalinska,3,16,values_only,17,False
+2022,2023,2022→2023,Politechnika Koszalinska,3,16,weights_only,16,True
+2022,2023,2022→2023,Uniwersytet Morski w Gdyni,1,19,full,18,True
+2022,2023,2022→2023,Uniwersytet Morski w Gdyni,1,19,values_only,18,True
+2022,2023,2022→2023,Uniwersytet Morski w Gdyni,1,19,weights_only,19,True
+2022,2023,2022→2023,Uniwersytet Morski w Gdyni,2,18,full,18,True
+2022,2023,2022→2023,Uniwersytet Morski w Gdyni,2,18,values_only,18,True
+2022,2023,2022→2023,Uniwersytet Morski w Gdyni,2,18,weights_only,18,True
+2022,2023,2022→2023,Uniwersytet Morski w Gdyni,3,17,full,16,True
+2022,2023,2022→2023,Uniwersytet Morski w Gdyni,3,17,values_only,16,True
+2022,2023,2022→2023,Uniwersytet Morski w Gdyni,3,17,weights_only,17,True
+2022,2023,2022→2023,Politechnika Morska w Szczecinie,1,20,full,19,True
+2022,2023,2022→2023,Politechnika Morska w Szczecinie,1,20,values_only,19,True
+2022,2023,2022→2023,Politechnika Morska w Szczecinie,1,20,weights_only,20,True
+2022,2023,2022→2023,Politechnika Morska w Szczecinie,2,19,full,19,True
+2022,2023,2022→2023,Politechnika Morska w Szczecinie,2,19,values_only,19,True
+2022,2023,2022→2023,Politechnika Morska w Szczecinie,2,19,weights_only,19,True
+2022,2023,2022→2023,Politechnika Morska w Szczecinie,3,18,full,19,False
+2022,2023,2022→2023,Politechnika Morska w Szczecinie,3,18,values_only,19,False
+2022,2023,2022→2023,Politechnika Morska w Szczecinie,3,18,weights_only,18,True
+2022,2023,2022→2023,Uniwersytet Radomski,1,21,full,22,False
+2022,2023,2022→2023,Uniwersytet Radomski,1,21,values_only,22,False
+2022,2023,2022→2023,Uniwersytet Radomski,1,21,weights_only,21,True
+2022,2023,2022→2023,Uniwersytet Radomski,2,20,full,19,True
+2022,2023,2022→2023,Uniwersytet Radomski,2,20,values_only,19,True
+2022,2023,2022→2023,Uniwersytet Radomski,2,20,weights_only,20,True
+2022,2023,2022→2023,Uniwersytet Radomski,3,19,full,19,True
+2022,2023,2022→2023,Uniwersytet Radomski,3,19,values_only,19,True
+2022,2023,2022→2023,Uniwersytet Radomski,3,19,weights_only,19,True
+2022,2023,2022→2023,Uniwersytet Bielsko-Bialski,1,22,full,23,False
+2022,2023,2022→2023,Uniwersytet Bielsko-Bialski,1,22,values_only,23,False
+2022,2023,2022→2023,Uniwersytet Bielsko-Bialski,1,22,weights_only,22,True
+2022,2023,2022→2023,Uniwersytet Bielsko-Bialski,2,21,full,22,False
+2022,2023,2022→2023,Uniwersytet Bielsko-Bialski,2,21,values_only,22,False
+2022,2023,2022→2023,Uniwersytet Bielsko-Bialski,2,21,weights_only,21,True
+2022,2023,2022→2023,Uniwersytet Bielsko-Bialski,3,20,full,19,True
+2022,2023,2022→2023,Uniwersytet Bielsko-Bialski,3,20,values_only,19,True
+2022,2023,2022→2023,Uniwersytet Bielsko-Bialski,3,20,weights_only,20,True
+2023,2024,2023→2024,AGH,1,1,full,3,False
+2023,2024,2023→2024,AGH,1,1,values_only,3,False
+2023,2024,2023→2024,AGH,1,1,weights_only,1,True
+2023,2024,2023→2024,Politechnika Gdanska,1,2,full,3,False
+2023,2024,2023→2024,Politechnika Gdanska,1,2,values_only,3,False
+2023,2024,2023→2024,Politechnika Gdanska,1,2,weights_only,3,False
+2023,2024,2023→2024,Politechnika Gdanska,2,1,full,3,False
+2023,2024,2023→2024,Politechnika Gdanska,2,1,values_only,2,False
+2023,2024,2023→2024,Politechnika Gdanska,2,1,weights_only,2,False
+2023,2024,2023→2024,Politechnika Poznanska,1,3,full,5,False
+2023,2024,2023→2024,Politechnika Poznanska,1,3,values_only,5,False
+2023,2024,2023→2024,Politechnika Poznanska,1,3,weights_only,3,True
+2023,2024,2023→2024,Politechnika Poznanska,2,2,full,4,False
+2023,2024,2023→2024,Politechnika Poznanska,2,2,values_only,4,False
+2023,2024,2023→2024,Politechnika Poznanska,2,2,weights_only,3,False
+2023,2024,2023→2024,Politechnika Poznanska,3,1,full,3,False
+2023,2024,2023→2024,Politechnika Poznanska,3,1,values_only,3,False
+2023,2024,2023→2024,Politechnika Poznanska,3,1,weights_only,1,True
+2023,2024,2023→2024,Politechnika Lodzka,1,4,full,7,False
+2023,2024,2023→2024,Politechnika Lodzka,1,4,values_only,7,False
+2023,2024,2023→2024,Politechnika Lodzka,1,4,weights_only,5,False
+2023,2024,2023→2024,Politechnika Lodzka,2,3,full,5,False
+2023,2024,2023→2024,Politechnika Lodzka,2,3,values_only,5,False
+2023,2024,2023→2024,Politechnika Lodzka,2,3,weights_only,3,True
+2023,2024,2023→2024,Politechnika Lodzka,3,2,full,4,False
+2023,2024,2023→2024,Politechnika Lodzka,3,2,values_only,4,False
+2023,2024,2023→2024,Politechnika Lodzka,3,2,weights_only,3,False
+2023,2024,2023→2024,Politechnika Wroclawska,1,5,full,7,False
+2023,2024,2023→2024,Politechnika Wroclawska,1,5,values_only,7,False
+2023,2024,2023→2024,Politechnika Wroclawska,1,5,weights_only,6,False
+2023,2024,2023→2024,Politechnika Wroclawska,2,4,full,7,False
+2023,2024,2023→2024,Politechnika Wroclawska,2,4,values_only,7,False
+2023,2024,2023→2024,Politechnika Wroclawska,2,4,weights_only,6,False
+2023,2024,2023→2024,Politechnika Wroclawska,3,3,full,6,False
+2023,2024,2023→2024,Politechnika Wroclawska,3,3,values_only,6,False
+2023,2024,2023→2024,Politechnika Wroclawska,3,3,weights_only,4,False
+2023,2024,2023→2024,Politechnika Slaska,1,6,full,7,False
+2023,2024,2023→2024,Politechnika Slaska,1,6,values_only,7,False
+2023,2024,2023→2024,Politechnika Slaska,1,6,weights_only,6,True
+2023,2024,2023→2024,Politechnika Slaska,2,5,full,7,False
+2023,2024,2023→2024,Politechnika Slaska,2,5,values_only,7,False
+2023,2024,2023→2024,Politechnika Slaska,2,5,weights_only,6,False
+2023,2024,2023→2024,Politechnika Slaska,3,4,full,7,False
+2023,2024,2023→2024,Politechnika Slaska,3,4,values_only,7,False
+2023,2024,2023→2024,Politechnika Slaska,3,4,weights_only,5,False
+2023,2024,2023→2024,Politechnika Krakowska,1,7,full,9,False
+2023,2024,2023→2024,Politechnika Krakowska,1,7,values_only,8,False
+2023,2024,2023→2024,Politechnika Krakowska,1,7,weights_only,7,True
+2023,2024,2023→2024,Politechnika Krakowska,2,6,full,8,False
+2023,2024,2023→2024,Politechnika Krakowska,2,6,values_only,8,False
+2023,2024,2023→2024,Politechnika Krakowska,2,6,weights_only,6,True
+2023,2024,2023→2024,Politechnika Krakowska,3,5,full,8,False
+2023,2024,2023→2024,Politechnika Krakowska,3,5,values_only,8,False
+2023,2024,2023→2024,Politechnika Krakowska,3,5,weights_only,5,True
+2023,2024,2023→2024,Politechnika Lubelska,1,8,full,11,False
+2023,2024,2023→2024,Politechnika Lubelska,1,8,values_only,11,False
+2023,2024,2023→2024,Politechnika Lubelska,1,8,weights_only,9,False
+2023,2024,2023→2024,Politechnika Lubelska,2,7,full,10,False
+2023,2024,2023→2024,Politechnika Lubelska,2,7,values_only,8,False
+2023,2024,2023→2024,Politechnika Lubelska,2,7,weights_only,8,False
+2023,2024,2023→2024,Politechnika Lubelska,3,6,full,8,False
+2023,2024,2023→2024,Politechnika Lubelska,3,6,values_only,8,False
+2023,2024,2023→2024,Politechnika Lubelska,3,6,weights_only,6,True
+2023,2024,2023→2024,PJATK,1,9,full,10,False
+2023,2024,2023→2024,PJATK,1,9,values_only,11,False
+2023,2024,2023→2024,PJATK,1,9,weights_only,9,True
+2023,2024,2023→2024,PJATK,2,8,full,10,False
+2023,2024,2023→2024,PJATK,2,8,values_only,11,False
+2023,2024,2023→2024,PJATK,2,8,weights_only,8,True
+2023,2024,2023→2024,PJATK,3,7,full,8,False
+2023,2024,2023→2024,PJATK,3,7,values_only,8,False
+2023,2024,2023→2024,PJATK,3,7,weights_only,7,True
+2023,2024,2023→2024,WAT,1,10,full,12,False
+2023,2024,2023→2024,WAT,1,10,values_only,13,False
+2023,2024,2023→2024,WAT,1,10,weights_only,10,True
+2023,2024,2023→2024,WAT,2,9,full,10,False
+2023,2024,2023→2024,WAT,2,9,values_only,11,False
+2023,2024,2023→2024,WAT,2,9,weights_only,9,True
+2023,2024,2023→2024,WAT,3,8,full,10,False
+2023,2024,2023→2024,WAT,3,8,values_only,11,False
+2023,2024,2023→2024,WAT,3,8,weights_only,8,True
+2023,2024,2023→2024,Uniwersytet Morski w Gdyni,1,11,full,13,False
+2023,2024,2023→2024,Uniwersytet Morski w Gdyni,1,11,values_only,14,False
+2023,2024,2023→2024,Uniwersytet Morski w Gdyni,1,11,weights_only,10,True
+2023,2024,2023→2024,Uniwersytet Morski w Gdyni,2,10,full,12,False
+2023,2024,2023→2024,Uniwersytet Morski w Gdyni,2,10,values_only,14,False
+2023,2024,2023→2024,Uniwersytet Morski w Gdyni,2,10,weights_only,10,True
+2023,2024,2023→2024,Uniwersytet Morski w Gdyni,3,9,full,11,False
+2023,2024,2023→2024,Uniwersytet Morski w Gdyni,3,9,values_only,12,False
+2023,2024,2023→2024,Uniwersytet Morski w Gdyni,3,9,weights_only,8,True
+2023,2024,2023→2024,ZUT,1,12,full,14,False
+2023,2024,2023→2024,ZUT,1,12,values_only,13,False
+2023,2024,2023→2024,ZUT,1,12,weights_only,13,False
+2023,2024,2023→2024,ZUT,2,11,full,13,False
+2023,2024,2023→2024,ZUT,2,11,values_only,13,False
+2023,2024,2023→2024,ZUT,2,11,weights_only,13,False
+2023,2024,2023→2024,ZUT,3,10,full,13,False
+2023,2024,2023→2024,ZUT,3,10,values_only,13,False
+2023,2024,2023→2024,ZUT,3,10,weights_only,11,False
+2023,2024,2023→2024,Politechnika Czestochowska,1,13,full,15,False
+2023,2024,2023→2024,Politechnika Czestochowska,1,13,values_only,15,False
+2023,2024,2023→2024,Politechnika Czestochowska,1,13,weights_only,13,True
+2023,2024,2023→2024,Politechnika Czestochowska,2,12,full,15,False
+2023,2024,2023→2024,Politechnika Czestochowska,2,12,values_only,14,False
+2023,2024,2023→2024,Politechnika Czestochowska,2,12,weights_only,13,False
+2023,2024,2023→2024,Politechnika Czestochowska,3,11,full,14,False
+2023,2024,2023→2024,Politechnika Czestochowska,3,11,values_only,14,False
+2023,2024,2023→2024,Politechnika Czestochowska,3,11,weights_only,12,False
+2023,2024,2023→2024,Politechnika Opolska,1,14,full,14,True
+2023,2024,2023→2024,Politechnika Opolska,1,14,values_only,14,True
+2023,2024,2023→2024,Politechnika Opolska,1,14,weights_only,14,True
+2023,2024,2023→2024,Politechnika Opolska,2,13,full,14,False
+2023,2024,2023→2024,Politechnika Opolska,2,13,values_only,14,False
+2023,2024,2023→2024,Politechnika Opolska,2,13,weights_only,13,True
+2023,2024,2023→2024,Politechnika Opolska,3,12,full,14,False
+2023,2024,2023→2024,Politechnika Opolska,3,12,values_only,13,False
+2023,2024,2023→2024,Politechnika Opolska,3,12,weights_only,13,False
+2023,2024,2023→2024,Politechnika Bialostocka,1,15,full,15,True
+2023,2024,2023→2024,Politechnika Bialostocka,1,15,values_only,15,True
+2023,2024,2023→2024,Politechnika Bialostocka,1,15,weights_only,16,False
+2023,2024,2023→2024,Politechnika Bialostocka,2,14,full,15,False
+2023,2024,2023→2024,Politechnika Bialostocka,2,14,values_only,15,False
+2023,2024,2023→2024,Politechnika Bialostocka,2,14,weights_only,15,False
+2023,2024,2023→2024,Politechnika Bialostocka,3,13,full,15,False
+2023,2024,2023→2024,Politechnika Bialostocka,3,13,values_only,15,False
+2023,2024,2023→2024,Politechnika Bialostocka,3,13,weights_only,14,False
+2023,2024,2023→2024,Politechnika Bydgoska,1,16,full,17,False
+2023,2024,2023→2024,Politechnika Bydgoska,1,16,values_only,17,False
+2023,2024,2023→2024,Politechnika Bydgoska,1,16,weights_only,16,True
+2023,2024,2023→2024,Politechnika Bydgoska,2,15,full,16,False
+2023,2024,2023→2024,Politechnika Bydgoska,2,15,values_only,16,False
+2023,2024,2023→2024,Politechnika Bydgoska,2,15,weights_only,16,False
+2023,2024,2023→2024,Politechnika Bydgoska,3,14,full,15,False
+2023,2024,2023→2024,Politechnika Bydgoska,3,14,values_only,15,False
+2023,2024,2023→2024,Politechnika Bydgoska,3,14,weights_only,15,False
+2023,2024,2023→2024,Politechnika Koszalinska,1,17,full,19,False
+2023,2024,2023→2024,Politechnika Koszalinska,1,17,values_only,19,False
+2023,2024,2023→2024,Politechnika Koszalinska,1,17,weights_only,18,False
+2023,2024,2023→2024,Politechnika Koszalinska,2,16,full,17,False
+2023,2024,2023→2024,Politechnika Koszalinska,2,16,values_only,17,False
+2023,2024,2023→2024,Politechnika Koszalinska,2,16,weights_only,17,False
+2023,2024,2023→2024,Politechnika Koszalinska,3,15,full,16,False
+2023,2024,2023→2024,Politechnika Koszalinska,3,15,values_only,16,False
+2023,2024,2023→2024,Politechnika Koszalinska,3,15,weights_only,16,False
+2023,2024,2023→2024,Politechnika Rzeszowska,1,18,full,20,False
+2023,2024,2023→2024,Politechnika Rzeszowska,1,18,values_only,20,False
+2023,2024,2023→2024,Politechnika Rzeszowska,1,18,weights_only,18,True
+2023,2024,2023→2024,Politechnika Rzeszowska,2,17,full,20,False
+2023,2024,2023→2024,Politechnika Rzeszowska,2,17,values_only,20,False
+2023,2024,2023→2024,Politechnika Rzeszowska,2,17,weights_only,18,False
+2023,2024,2023→2024,Politechnika Rzeszowska,3,16,full,17,False
+2023,2024,2023→2024,Politechnika Rzeszowska,3,16,values_only,17,False
+2023,2024,2023→2024,Politechnika Rzeszowska,3,16,weights_only,17,False
+2023,2024,2023→2024,Politechnika Swietokrzyska,1,19,full,20,False
+2023,2024,2023→2024,Politechnika Swietokrzyska,1,19,values_only,20,False
+2023,2024,2023→2024,Politechnika Swietokrzyska,1,19,weights_only,20,False
+2023,2024,2023→2024,Politechnika Swietokrzyska,2,18,full,19,False
+2023,2024,2023→2024,Politechnika Swietokrzyska,2,18,values_only,19,False
+2023,2024,2023→2024,Politechnika Swietokrzyska,2,18,weights_only,19,False
+2023,2024,2023→2024,Politechnika Swietokrzyska,3,17,full,19,False
+2023,2024,2023→2024,Politechnika Swietokrzyska,3,17,values_only,19,False
+2023,2024,2023→2024,Politechnika Swietokrzyska,3,17,weights_only,19,False
+2023,2024,2023→2024,Politechnika Morska w Szczecinie,1,20,full,21,False
+2023,2024,2023→2024,Politechnika Morska w Szczecinie,1,20,values_only,21,False
+2023,2024,2023→2024,Politechnika Morska w Szczecinie,1,20,weights_only,21,False
+2023,2024,2023→2024,Politechnika Morska w Szczecinie,2,19,full,21,False
+2023,2024,2023→2024,Politechnika Morska w Szczecinie,2,19,values_only,21,False
+2023,2024,2023→2024,Politechnika Morska w Szczecinie,2,19,weights_only,21,False
+2023,2024,2023→2024,Politechnika Morska w Szczecinie,3,18,full,20,False
+2023,2024,2023→2024,Politechnika Morska w Szczecinie,3,18,values_only,20,False
+2023,2024,2023→2024,Politechnika Morska w Szczecinie,3,18,weights_only,19,False
+2023,2024,2023→2024,Uniwersytet Radomski,1,21,full,22,False
+2023,2024,2023→2024,Uniwersytet Radomski,1,21,values_only,22,False
+2023,2024,2023→2024,Uniwersytet Radomski,1,21,weights_only,22,False
+2023,2024,2023→2024,Uniwersytet Radomski,2,20,full,21,False
+2023,2024,2023→2024,Uniwersytet Radomski,2,20,values_only,21,False
+2023,2024,2023→2024,Uniwersytet Radomski,2,20,weights_only,21,False
+2023,2024,2023→2024,Uniwersytet Radomski,3,19,full,21,False
+2023,2024,2023→2024,Uniwersytet Radomski,3,19,values_only,21,False
+2023,2024,2023→2024,Uniwersytet Radomski,3,19,weights_only,21,False
+2023,2024,2023→2024,Uniwersytet Bielsko-Bialski,1,22,full,22,True
+2023,2024,2023→2024,Uniwersytet Bielsko-Bialski,1,22,values_only,22,True
+2023,2024,2023→2024,Uniwersytet Bielsko-Bialski,1,22,weights_only,23,False
+2023,2024,2023→2024,Uniwersytet Bielsko-Bialski,2,21,full,22,False
+2023,2024,2023→2024,Uniwersytet Bielsko-Bialski,2,21,values_only,22,False
+2023,2024,2023→2024,Uniwersytet Bielsko-Bialski,2,21,weights_only,22,False
+2023,2024,2023→2024,Uniwersytet Bielsko-Bialski,3,20,full,21,False
+2023,2024,2023→2024,Uniwersytet Bielsko-Bialski,3,20,values_only,21,False
+2023,2024,2023→2024,Uniwersytet Bielsko-Bialski,3,20,weights_only,21,False
+2024,2025,2024→2025,Politechnika Gdanska,1,1,full,2,False
+2024,2025,2024→2025,Politechnika Gdanska,1,1,values_only,2,False
+2024,2025,2024→2025,Politechnika Gdanska,1,1,weights_only,1,True
+2024,2025,2024→2025,AGH,1,2,full,3,False
+2024,2025,2024→2025,AGH,1,2,values_only,3,False
+2024,2025,2024→2025,AGH,1,2,weights_only,2,True
+2024,2025,2024→2025,AGH,2,1,full,3,False
+2024,2025,2024→2025,AGH,2,1,values_only,3,False
+2024,2025,2024→2025,AGH,2,1,weights_only,1,True
+2024,2025,2024→2025,Politechnika Poznanska,1,3,full,4,False
+2024,2025,2024→2025,Politechnika Poznanska,1,3,values_only,4,False
+2024,2025,2024→2025,Politechnika Poznanska,1,3,weights_only,3,True
+2024,2025,2024→2025,Politechnika Poznanska,2,2,full,4,False
+2024,2025,2024→2025,Politechnika Poznanska,2,2,values_only,4,False
+2024,2025,2024→2025,Politechnika Poznanska,2,2,weights_only,2,True
+2024,2025,2024→2025,Politechnika Poznanska,3,1,full,3,False
+2024,2025,2024→2025,Politechnika Poznanska,3,1,values_only,3,False
+2024,2025,2024→2025,Politechnika Poznanska,3,1,weights_only,1,True
+2024,2025,2024→2025,Politechnika Lodzka,1,4,full,7,False
+2024,2025,2024→2025,Politechnika Lodzka,1,4,values_only,7,False
+2024,2025,2024→2025,Politechnika Lodzka,1,4,weights_only,4,True
+2024,2025,2024→2025,Politechnika Lodzka,2,3,full,4,False
+2024,2025,2024→2025,Politechnika Lodzka,2,3,values_only,4,False
+2024,2025,2024→2025,Politechnika Lodzka,2,3,weights_only,3,True
+2024,2025,2024→2025,Politechnika Lodzka,3,2,full,4,False
+2024,2025,2024→2025,Politechnika Lodzka,3,2,values_only,4,False
+2024,2025,2024→2025,Politechnika Lodzka,3,2,weights_only,2,True
+2024,2025,2024→2025,Politechnika Wroclawska,1,5,full,7,False
+2024,2025,2024→2025,Politechnika Wroclawska,1,5,values_only,7,False
+2024,2025,2024→2025,Politechnika Wroclawska,1,5,weights_only,5,True
+2024,2025,2024→2025,Politechnika Wroclawska,2,4,full,7,False
+2024,2025,2024→2025,Politechnika Wroclawska,2,4,values_only,7,False
+2024,2025,2024→2025,Politechnika Wroclawska,2,4,weights_only,4,True
+2024,2025,2024→2025,Politechnika Wroclawska,3,3,full,4,False
+2024,2025,2024→2025,Politechnika Wroclawska,3,3,values_only,4,False
+2024,2025,2024→2025,Politechnika Wroclawska,3,3,weights_only,3,True
+2024,2025,2024→2025,Politechnika Slaska,1,6,full,8,False
+2024,2025,2024→2025,Politechnika Slaska,1,6,values_only,8,False
+2024,2025,2024→2025,Politechnika Slaska,1,6,weights_only,6,True
+2024,2025,2024→2025,Politechnika Slaska,2,5,full,7,False
+2024,2025,2024→2025,Politechnika Slaska,2,5,values_only,7,False
+2024,2025,2024→2025,Politechnika Slaska,2,5,weights_only,5,True
+2024,2025,2024→2025,Politechnika Slaska,3,4,full,7,False
+2024,2025,2024→2025,Politechnika Slaska,3,4,values_only,7,False
+2024,2025,2024→2025,Politechnika Slaska,3,4,weights_only,4,True
+2024,2025,2024→2025,PJATK,1,7,full,9,False
+2024,2025,2024→2025,PJATK,1,7,values_only,9,False
+2024,2025,2024→2025,PJATK,1,7,weights_only,7,True
+2024,2025,2024→2025,PJATK,2,6,full,8,False
+2024,2025,2024→2025,PJATK,2,6,values_only,8,False
+2024,2025,2024→2025,PJATK,2,6,weights_only,6,True
+2024,2025,2024→2025,PJATK,3,5,full,8,False
+2024,2025,2024→2025,PJATK,3,5,values_only,8,False
+2024,2025,2024→2025,PJATK,3,5,weights_only,5,True
+2024,2025,2024→2025,Politechnika Krakowska,1,8,full,10,False
+2024,2025,2024→2025,Politechnika Krakowska,1,8,values_only,10,False
+2024,2025,2024→2025,Politechnika Krakowska,1,8,weights_only,8,True
+2024,2025,2024→2025,Politechnika Krakowska,2,7,full,9,False
+2024,2025,2024→2025,Politechnika Krakowska,2,7,values_only,9,False
+2024,2025,2024→2025,Politechnika Krakowska,2,7,weights_only,7,True
+2024,2025,2024→2025,Politechnika Krakowska,3,6,full,9,False
+2024,2025,2024→2025,Politechnika Krakowska,3,6,values_only,9,False
+2024,2025,2024→2025,Politechnika Krakowska,3,6,weights_only,6,True
+2024,2025,2024→2025,WAT,1,9,full,12,False
+2024,2025,2024→2025,WAT,1,9,values_only,12,False
+2024,2025,2024→2025,WAT,1,9,weights_only,9,True
+2024,2025,2024→2025,WAT,2,8,full,11,False
+2024,2025,2024→2025,WAT,2,8,values_only,11,False
+2024,2025,2024→2025,WAT,2,8,weights_only,8,True
+2024,2025,2024→2025,WAT,3,7,full,10,False
+2024,2025,2024→2025,WAT,3,7,values_only,10,False
+2024,2025,2024→2025,WAT,3,7,weights_only,7,True
+2024,2025,2024→2025,Politechnika Lubelska,1,10,full,13,False
+2024,2025,2024→2025,Politechnika Lubelska,1,10,values_only,13,False
+2024,2025,2024→2025,Politechnika Lubelska,1,10,weights_only,10,True
+2024,2025,2024→2025,Politechnika Lubelska,2,9,full,11,False
+2024,2025,2024→2025,Politechnika Lubelska,2,9,values_only,11,False
+2024,2025,2024→2025,Politechnika Lubelska,2,9,weights_only,9,True
+2024,2025,2024→2025,Politechnika Lubelska,3,8,full,10,False
+2024,2025,2024→2025,Politechnika Lubelska,3,8,values_only,10,False
+2024,2025,2024→2025,Politechnika Lubelska,3,8,weights_only,8,True
+2024,2025,2024→2025,ZUT,1,11,full,13,False
+2024,2025,2024→2025,ZUT,1,11,values_only,13,False
+2024,2025,2024→2025,ZUT,1,11,weights_only,11,True
+2024,2025,2024→2025,ZUT,2,10,full,13,False
+2024,2025,2024→2025,ZUT,2,10,values_only,13,False
+2024,2025,2024→2025,ZUT,2,10,weights_only,10,True
+2024,2025,2024→2025,ZUT,3,9,full,11,False
+2024,2025,2024→2025,ZUT,3,9,values_only,11,False
+2024,2025,2024→2025,ZUT,3,9,weights_only,9,True
+2024,2025,2024→2025,Politechnika Opolska,1,12,full,13,False
+2024,2025,2024→2025,Politechnika Opolska,1,12,values_only,13,False
+2024,2025,2024→2025,Politechnika Opolska,1,12,weights_only,12,True
+2024,2025,2024→2025,Politechnika Opolska,2,11,full,13,False
+2024,2025,2024→2025,Politechnika Opolska,2,11,values_only,13,False
+2024,2025,2024→2025,Politechnika Opolska,2,11,weights_only,11,True
+2024,2025,2024→2025,Politechnika Opolska,3,10,full,13,False
+2024,2025,2024→2025,Politechnika Opolska,3,10,values_only,13,False
+2024,2025,2024→2025,Politechnika Opolska,3,10,weights_only,10,True
+2024,2025,2024→2025,Uniwersytet Morski w Gdyni,1,13,full,14,False
+2024,2025,2024→2025,Uniwersytet Morski w Gdyni,1,13,values_only,14,False
+2024,2025,2024→2025,Uniwersytet Morski w Gdyni,1,13,weights_only,13,True
+2024,2025,2024→2025,Uniwersytet Morski w Gdyni,2,12,full,14,False
+2024,2025,2024→2025,Uniwersytet Morski w Gdyni,2,12,values_only,14,False
+2024,2025,2024→2025,Uniwersytet Morski w Gdyni,2,12,weights_only,12,True
+2024,2025,2024→2025,Uniwersytet Morski w Gdyni,3,11,full,14,False
+2024,2025,2024→2025,Uniwersytet Morski w Gdyni,3,11,values_only,14,False
+2024,2025,2024→2025,Uniwersytet Morski w Gdyni,3,11,weights_only,11,True
+2024,2025,2024→2025,Politechnika Bialostocka,1,14,full,14,True
+2024,2025,2024→2025,Politechnika Bialostocka,1,14,values_only,14,True
+2024,2025,2024→2025,Politechnika Bialostocka,1,14,weights_only,14,True
+2024,2025,2024→2025,Politechnika Bialostocka,2,13,full,14,False
+2024,2025,2024→2025,Politechnika Bialostocka,2,13,values_only,14,False
+2024,2025,2024→2025,Politechnika Bialostocka,2,13,weights_only,13,True
+2024,2025,2024→2025,Politechnika Bialostocka,3,12,full,14,False
+2024,2025,2024→2025,Politechnika Bialostocka,3,12,values_only,14,False
+2024,2025,2024→2025,Politechnika Bialostocka,3,12,weights_only,12,True
+2024,2025,2024→2025,Politechnika Czestochowska,1,15,full,18,False
+2024,2025,2024→2025,Politechnika Czestochowska,1,15,values_only,18,False
+2024,2025,2024→2025,Politechnika Czestochowska,1,15,weights_only,15,True
+2024,2025,2024→2025,Politechnika Czestochowska,2,14,full,15,False
+2024,2025,2024→2025,Politechnika Czestochowska,2,14,values_only,15,False
+2024,2025,2024→2025,Politechnika Czestochowska,2,14,weights_only,14,True
+2024,2025,2024→2025,Politechnika Czestochowska,3,13,full,14,False
+2024,2025,2024→2025,Politechnika Czestochowska,3,13,values_only,14,False
+2024,2025,2024→2025,Politechnika Czestochowska,3,13,weights_only,13,True
+2024,2025,2024→2025,Politechnika Bydgoska,1,16,full,18,False
+2024,2025,2024→2025,Politechnika Bydgoska,1,16,values_only,18,False
+2024,2025,2024→2025,Politechnika Bydgoska,1,16,weights_only,16,True
+2024,2025,2024→2025,Politechnika Bydgoska,2,15,full,18,False
+2024,2025,2024→2025,Politechnika Bydgoska,2,15,values_only,18,False
+2024,2025,2024→2025,Politechnika Bydgoska,2,15,weights_only,15,True
+2024,2025,2024→2025,Politechnika Bydgoska,3,14,full,15,False
+2024,2025,2024→2025,Politechnika Bydgoska,3,14,values_only,15,False
+2024,2025,2024→2025,Politechnika Bydgoska,3,14,weights_only,14,True
+2024,2025,2024→2025,Politechnika Koszalinska,1,17,full,20,False
+2024,2025,2024→2025,Politechnika Koszalinska,1,17,values_only,20,False
+2024,2025,2024→2025,Politechnika Koszalinska,1,17,weights_only,17,True
+2024,2025,2024→2025,Politechnika Koszalinska,2,16,full,19,False
+2024,2025,2024→2025,Politechnika Koszalinska,2,16,values_only,19,False
+2024,2025,2024→2025,Politechnika Koszalinska,2,16,weights_only,16,True
+2024,2025,2024→2025,Politechnika Koszalinska,3,15,full,19,False
+2024,2025,2024→2025,Politechnika Koszalinska,3,15,values_only,19,False
+2024,2025,2024→2025,Politechnika Koszalinska,3,15,weights_only,15,True
+2024,2025,2024→2025,Politechnika Swietokrzyska,1,18,full,21,False
+2024,2025,2024→2025,Politechnika Swietokrzyska,1,18,values_only,21,False
+2024,2025,2024→2025,Politechnika Swietokrzyska,1,18,weights_only,18,True
+2024,2025,2024→2025,Politechnika Swietokrzyska,2,17,full,20,False
+2024,2025,2024→2025,Politechnika Swietokrzyska,2,17,values_only,20,False
+2024,2025,2024→2025,Politechnika Swietokrzyska,2,17,weights_only,17,True
+2024,2025,2024→2025,Politechnika Swietokrzyska,3,16,full,19,False
+2024,2025,2024→2025,Politechnika Swietokrzyska,3,16,values_only,19,False
+2024,2025,2024→2025,Politechnika Swietokrzyska,3,16,weights_only,16,True
+2024,2025,2024→2025,Politechnika Rzeszowska,1,19,full,21,False
+2024,2025,2024→2025,Politechnika Rzeszowska,1,19,values_only,21,False
+2024,2025,2024→2025,Politechnika Rzeszowska,1,19,weights_only,19,True
+2024,2025,2024→2025,Politechnika Rzeszowska,2,18,full,21,False
+2024,2025,2024→2025,Politechnika Rzeszowska,2,18,values_only,21,False
+2024,2025,2024→2025,Politechnika Rzeszowska,2,18,weights_only,18,True
+2024,2025,2024→2025,Politechnika Rzeszowska,3,17,full,20,False
+2024,2025,2024→2025,Politechnika Rzeszowska,3,17,values_only,20,False
+2024,2025,2024→2025,Politechnika Rzeszowska,3,17,weights_only,17,True
+2024,2025,2024→2025,Politechnika Morska w Szczecinie,1,20,full,21,False
+2024,2025,2024→2025,Politechnika Morska w Szczecinie,1,20,values_only,21,False
+2024,2025,2024→2025,Politechnika Morska w Szczecinie,1,20,weights_only,20,True
+2024,2025,2024→2025,Politechnika Morska w Szczecinie,2,19,full,21,False
+2024,2025,2024→2025,Politechnika Morska w Szczecinie,2,19,values_only,21,False
+2024,2025,2024→2025,Politechnika Morska w Szczecinie,2,19,weights_only,19,True
+2024,2025,2024→2025,Politechnika Morska w Szczecinie,3,18,full,21,False
+2024,2025,2024→2025,Politechnika Morska w Szczecinie,3,18,values_only,21,False
+2024,2025,2024→2025,Politechnika Morska w Szczecinie,3,18,weights_only,18,True
+2024,2025,2024→2025,Uniwersytet Bielsko-Bialski,1,21,full,22,False
+2024,2025,2024→2025,Uniwersytet Bielsko-Bialski,1,21,values_only,22,False
+2024,2025,2024→2025,Uniwersytet Bielsko-Bialski,1,21,weights_only,21,True
+2024,2025,2024→2025,Uniwersytet Bielsko-Bialski,2,20,full,22,False
+2024,2025,2024→2025,Uniwersytet Bielsko-Bialski,2,20,values_only,22,False
+2024,2025,2024→2025,Uniwersytet Bielsko-Bialski,2,20,weights_only,20,True
+2024,2025,2024→2025,Uniwersytet Bielsko-Bialski,3,19,full,22,False
+2024,2025,2024→2025,Uniwersytet Bielsko-Bialski,3,19,values_only,22,False
+2024,2025,2024→2025,Uniwersytet Bielsko-Bialski,3,19,weights_only,19,True
+2024,2025,2024→2025,Uniwersytet Radomski,1,22,full,23,False
+2024,2025,2024→2025,Uniwersytet Radomski,1,22,values_only,23,False
+2024,2025,2024→2025,Uniwersytet Radomski,1,22,weights_only,22,True
+2024,2025,2024→2025,Uniwersytet Radomski,2,21,full,22,False
+2024,2025,2024→2025,Uniwersytet Radomski,2,21,values_only,22,False
+2024,2025,2024→2025,Uniwersytet Radomski,2,21,weights_only,21,True
+2024,2025,2024→2025,Uniwersytet Radomski,3,20,full,22,False
+2024,2025,2024→2025,Uniwersytet Radomski,3,20,values_only,22,False
+2024,2025,2024→2025,Uniwersytet Radomski,3,20,weights_only,20,True
+2025,2026,2025→2026,Politechnika Gdanska,1,1,full,2,False
+2025,2026,2025→2026,Politechnika Gdanska,1,1,values_only,2,False
+2025,2026,2025→2026,Politechnika Gdanska,1,1,weights_only,1,True
+2025,2026,2025→2026,AGH,1,2,full,3,False
+2025,2026,2025→2026,AGH,1,2,values_only,3,False
+2025,2026,2025→2026,AGH,1,2,weights_only,2,True
+2025,2026,2025→2026,AGH,2,1,full,2,False
+2025,2026,2025→2026,AGH,2,1,values_only,2,False
+2025,2026,2025→2026,AGH,2,1,weights_only,1,True
+2025,2026,2025→2026,Politechnika Wroclawska,1,3,full,3,True
+2025,2026,2025→2026,Politechnika Wroclawska,1,3,values_only,3,True
+2025,2026,2025→2026,Politechnika Wroclawska,1,3,weights_only,3,True
+2025,2026,2025→2026,Politechnika Wroclawska,2,2,full,3,False
+2025,2026,2025→2026,Politechnika Wroclawska,2,2,values_only,3,False
+2025,2026,2025→2026,Politechnika Wroclawska,2,2,weights_only,2,True
+2025,2026,2025→2026,Politechnika Wroclawska,3,1,full,2,False
+2025,2026,2025→2026,Politechnika Wroclawska,3,1,values_only,2,False
+2025,2026,2025→2026,Politechnika Wroclawska,3,1,weights_only,1,True
+2025,2026,2025→2026,Politechnika Poznanska,1,4,full,4,True
+2025,2026,2025→2026,Politechnika Poznanska,1,4,values_only,4,True
+2025,2026,2025→2026,Politechnika Poznanska,1,4,weights_only,4,True
+2025,2026,2025→2026,Politechnika Poznanska,2,3,full,3,True
+2025,2026,2025→2026,Politechnika Poznanska,2,3,values_only,3,True
+2025,2026,2025→2026,Politechnika Poznanska,2,3,weights_only,3,True
+2025,2026,2025→2026,Politechnika Poznanska,3,2,full,3,False
+2025,2026,2025→2026,Politechnika Poznanska,3,2,values_only,3,False
+2025,2026,2025→2026,Politechnika Poznanska,3,2,weights_only,2,True
+2025,2026,2025→2026,Politechnika Slaska,1,5,full,5,True
+2025,2026,2025→2026,Politechnika Slaska,1,5,values_only,5,True
+2025,2026,2025→2026,Politechnika Slaska,1,5,weights_only,5,True
+2025,2026,2025→2026,Politechnika Slaska,2,4,full,4,True
+2025,2026,2025→2026,Politechnika Slaska,2,4,values_only,4,True
+2025,2026,2025→2026,Politechnika Slaska,2,4,weights_only,4,True
+2025,2026,2025→2026,Politechnika Slaska,3,3,full,3,True
+2025,2026,2025→2026,Politechnika Slaska,3,3,values_only,3,True
+2025,2026,2025→2026,Politechnika Slaska,3,3,weights_only,3,True
+2025,2026,2025→2026,Politechnika Lodzka,1,6,full,5,True
+2025,2026,2025→2026,Politechnika Lodzka,1,6,values_only,5,True
+2025,2026,2025→2026,Politechnika Lodzka,1,6,weights_only,6,True
+2025,2026,2025→2026,Politechnika Lodzka,2,5,full,5,True
+2025,2026,2025→2026,Politechnika Lodzka,2,5,values_only,5,True
+2025,2026,2025→2026,Politechnika Lodzka,2,5,weights_only,5,True
+2025,2026,2025→2026,Politechnika Lodzka,3,4,full,4,True
+2025,2026,2025→2026,Politechnika Lodzka,3,4,values_only,4,True
+2025,2026,2025→2026,Politechnika Lodzka,3,4,weights_only,4,True
+2025,2026,2025→2026,PJATK,1,7,full,5,True
+2025,2026,2025→2026,PJATK,1,7,values_only,5,True
+2025,2026,2025→2026,PJATK,1,7,weights_only,7,True
+2025,2026,2025→2026,PJATK,2,6,full,5,True
+2025,2026,2025→2026,PJATK,2,6,values_only,5,True
+2025,2026,2025→2026,PJATK,2,6,weights_only,6,True
+2025,2026,2025→2026,PJATK,3,5,full,5,True
+2025,2026,2025→2026,PJATK,3,5,values_only,5,True
+2025,2026,2025→2026,PJATK,3,5,weights_only,5,True
+2025,2026,2025→2026,Politechnika Krakowska,1,8,full,8,True
+2025,2026,2025→2026,Politechnika Krakowska,1,8,values_only,8,True
+2025,2026,2025→2026,Politechnika Krakowska,1,8,weights_only,8,True
+2025,2026,2025→2026,Politechnika Krakowska,2,7,full,5,True
+2025,2026,2025→2026,Politechnika Krakowska,2,7,values_only,5,True
+2025,2026,2025→2026,Politechnika Krakowska,2,7,weights_only,7,True
+2025,2026,2025→2026,Politechnika Krakowska,3,6,full,5,True
+2025,2026,2025→2026,Politechnika Krakowska,3,6,values_only,5,True
+2025,2026,2025→2026,Politechnika Krakowska,3,6,weights_only,6,True
+2025,2026,2025→2026,Politechnika Lubelska,1,9,full,9,True
+2025,2026,2025→2026,Politechnika Lubelska,1,9,values_only,9,True
+2025,2026,2025→2026,Politechnika Lubelska,1,9,weights_only,9,True
+2025,2026,2025→2026,Politechnika Lubelska,2,8,full,8,True
+2025,2026,2025→2026,Politechnika Lubelska,2,8,values_only,8,True
+2025,2026,2025→2026,Politechnika Lubelska,2,8,weights_only,8,True
+2025,2026,2025→2026,Politechnika Lubelska,3,7,full,5,True
+2025,2026,2025→2026,Politechnika Lubelska,3,7,values_only,5,True
+2025,2026,2025→2026,Politechnika Lubelska,3,7,weights_only,7,True
+2025,2026,2025→2026,ZUT,1,10,full,10,True
+2025,2026,2025→2026,ZUT,1,10,values_only,10,True
+2025,2026,2025→2026,ZUT,1,10,weights_only,10,True
+2025,2026,2025→2026,ZUT,2,9,full,9,True
+2025,2026,2025→2026,ZUT,2,9,values_only,9,True
+2025,2026,2025→2026,ZUT,2,9,weights_only,9,True
+2025,2026,2025→2026,ZUT,3,8,full,8,True
+2025,2026,2025→2026,ZUT,3,8,values_only,8,True
+2025,2026,2025→2026,ZUT,3,8,weights_only,8,True
+2025,2026,2025→2026,Politechnika Opolska,1,11,full,10,True
+2025,2026,2025→2026,Politechnika Opolska,1,11,values_only,10,True
+2025,2026,2025→2026,Politechnika Opolska,1,11,weights_only,11,True
+2025,2026,2025→2026,Politechnika Opolska,2,10,full,10,True
+2025,2026,2025→2026,Politechnika Opolska,2,10,values_only,10,True
+2025,2026,2025→2026,Politechnika Opolska,2,10,weights_only,10,True
+2025,2026,2025→2026,Politechnika Opolska,3,9,full,9,True
+2025,2026,2025→2026,Politechnika Opolska,3,9,values_only,9,True
+2025,2026,2025→2026,Politechnika Opolska,3,9,weights_only,9,True
+2025,2026,2025→2026,WAT,1,12,full,10,True
+2025,2026,2025→2026,WAT,1,12,values_only,10,True
+2025,2026,2025→2026,WAT,1,12,weights_only,12,True
+2025,2026,2025→2026,WAT,2,11,full,10,True
+2025,2026,2025→2026,WAT,2,11,values_only,10,True
+2025,2026,2025→2026,WAT,2,11,weights_only,11,True
+2025,2026,2025→2026,WAT,3,10,full,10,True
+2025,2026,2025→2026,WAT,3,10,values_only,10,True
+2025,2026,2025→2026,WAT,3,10,weights_only,10,True
+2025,2026,2025→2026,Politechnika Bialostocka,1,13,full,10,True
+2025,2026,2025→2026,Politechnika Bialostocka,1,13,values_only,10,True
+2025,2026,2025→2026,Politechnika Bialostocka,1,13,weights_only,13,True
+2025,2026,2025→2026,Politechnika Bialostocka,2,12,full,10,True
+2025,2026,2025→2026,Politechnika Bialostocka,2,12,values_only,10,True
+2025,2026,2025→2026,Politechnika Bialostocka,2,12,weights_only,12,True
+2025,2026,2025→2026,Politechnika Bialostocka,3,11,full,10,True
+2025,2026,2025→2026,Politechnika Bialostocka,3,11,values_only,10,True
+2025,2026,2025→2026,Politechnika Bialostocka,3,11,weights_only,11,True
+2025,2026,2025→2026,Politechnika Bydgoska,1,14,full,14,True
+2025,2026,2025→2026,Politechnika Bydgoska,1,14,values_only,14,True
+2025,2026,2025→2026,Politechnika Bydgoska,1,14,weights_only,14,True
+2025,2026,2025→2026,Politechnika Bydgoska,2,13,full,10,True
+2025,2026,2025→2026,Politechnika Bydgoska,2,13,values_only,10,True
+2025,2026,2025→2026,Politechnika Bydgoska,2,13,weights_only,13,True
+2025,2026,2025→2026,Politechnika Bydgoska,3,12,full,10,True
+2025,2026,2025→2026,Politechnika Bydgoska,3,12,values_only,10,True
+2025,2026,2025→2026,Politechnika Bydgoska,3,12,weights_only,12,True
+2025,2026,2025→2026,Politechnika Czestochowska,1,15,full,14,True
+2025,2026,2025→2026,Politechnika Czestochowska,1,15,values_only,14,True
+2025,2026,2025→2026,Politechnika Czestochowska,1,15,weights_only,15,True
+2025,2026,2025→2026,Politechnika Czestochowska,2,14,full,14,True
+2025,2026,2025→2026,Politechnika Czestochowska,2,14,values_only,14,True
+2025,2026,2025→2026,Politechnika Czestochowska,2,14,weights_only,14,True
+2025,2026,2025→2026,Politechnika Czestochowska,3,13,full,10,True
+2025,2026,2025→2026,Politechnika Czestochowska,3,13,values_only,10,True
+2025,2026,2025→2026,Politechnika Czestochowska,3,13,weights_only,13,True
+2025,2026,2025→2026,Politechnika Rzeszowska,1,16,full,14,True
+2025,2026,2025→2026,Politechnika Rzeszowska,1,16,values_only,14,True
+2025,2026,2025→2026,Politechnika Rzeszowska,1,16,weights_only,16,True
+2025,2026,2025→2026,Politechnika Rzeszowska,2,15,full,14,True
+2025,2026,2025→2026,Politechnika Rzeszowska,2,15,values_only,14,True
+2025,2026,2025→2026,Politechnika Rzeszowska,2,15,weights_only,15,True
+2025,2026,2025→2026,Politechnika Rzeszowska,3,14,full,14,True
+2025,2026,2025→2026,Politechnika Rzeszowska,3,14,values_only,14,True
+2025,2026,2025→2026,Politechnika Rzeszowska,3,14,weights_only,14,True
+2025,2026,2025→2026,Uniwersytet Morski w Gdyni,1,17,full,16,True
+2025,2026,2025→2026,Uniwersytet Morski w Gdyni,1,17,values_only,16,True
+2025,2026,2025→2026,Uniwersytet Morski w Gdyni,1,17,weights_only,17,True
+2025,2026,2025→2026,Uniwersytet Morski w Gdyni,2,16,full,14,True
+2025,2026,2025→2026,Uniwersytet Morski w Gdyni,2,16,values_only,14,True
+2025,2026,2025→2026,Uniwersytet Morski w Gdyni,2,16,weights_only,16,True
+2025,2026,2025→2026,Uniwersytet Morski w Gdyni,3,15,full,14,True
+2025,2026,2025→2026,Uniwersytet Morski w Gdyni,3,15,values_only,14,True
+2025,2026,2025→2026,Uniwersytet Morski w Gdyni,3,15,weights_only,15,True
+2025,2026,2025→2026,Politechnika Swietokrzyska,1,18,full,17,True
+2025,2026,2025→2026,Politechnika Swietokrzyska,1,18,values_only,17,True
+2025,2026,2025→2026,Politechnika Swietokrzyska,1,18,weights_only,18,True
+2025,2026,2025→2026,Politechnika Swietokrzyska,2,17,full,16,True
+2025,2026,2025→2026,Politechnika Swietokrzyska,2,17,values_only,16,True
+2025,2026,2025→2026,Politechnika Swietokrzyska,2,17,weights_only,17,True
+2025,2026,2025→2026,Politechnika Swietokrzyska,3,16,full,14,True
+2025,2026,2025→2026,Politechnika Swietokrzyska,3,16,values_only,14,True
+2025,2026,2025→2026,Politechnika Swietokrzyska,3,16,weights_only,16,True
+2025,2026,2025→2026,Politechnika Koszalinska,1,19,full,17,True
+2025,2026,2025→2026,Politechnika Koszalinska,1,19,values_only,17,True
+2025,2026,2025→2026,Politechnika Koszalinska,1,19,weights_only,19,True
+2025,2026,2025→2026,Politechnika Koszalinska,2,18,full,17,True
+2025,2026,2025→2026,Politechnika Koszalinska,2,18,values_only,17,True
+2025,2026,2025→2026,Politechnika Koszalinska,2,18,weights_only,18,True
+2025,2026,2025→2026,Politechnika Koszalinska,3,17,full,16,True
+2025,2026,2025→2026,Politechnika Koszalinska,3,17,values_only,16,True
+2025,2026,2025→2026,Politechnika Koszalinska,3,17,weights_only,17,True
+2025,2026,2025→2026,Politechnika Morska w Szczecinie,1,20,full,18,True
+2025,2026,2025→2026,Politechnika Morska w Szczecinie,1,20,values_only,18,True
+2025,2026,2025→2026,Politechnika Morska w Szczecinie,1,20,weights_only,20,True
+2025,2026,2025→2026,Politechnika Morska w Szczecinie,2,19,full,17,True
+2025,2026,2025→2026,Politechnika Morska w Szczecinie,2,19,values_only,17,True
+2025,2026,2025→2026,Politechnika Morska w Szczecinie,2,19,weights_only,19,True
+2025,2026,2025→2026,Politechnika Morska w Szczecinie,3,18,full,17,True
+2025,2026,2025→2026,Politechnika Morska w Szczecinie,3,18,values_only,17,True
+2025,2026,2025→2026,Politechnika Morska w Szczecinie,3,18,weights_only,18,True
+2025,2026,2025→2026,Uniwersytet Bielsko-Bialski,1,21,full,19,True
+2025,2026,2025→2026,Uniwersytet Bielsko-Bialski,1,21,values_only,19,True
+2025,2026,2025→2026,Uniwersytet Bielsko-Bialski,1,21,weights_only,21,True
+2025,2026,2025→2026,Uniwersytet Bielsko-Bialski,2,20,full,18,True
+2025,2026,2025→2026,Uniwersytet Bielsko-Bialski,2,20,values_only,18,True
+2025,2026,2025→2026,Uniwersytet Bielsko-Bialski,2,20,weights_only,20,True
+2025,2026,2025→2026,Uniwersytet Bielsko-Bialski,3,19,full,17,True
+2025,2026,2025→2026,Uniwersytet Bielsko-Bialski,3,19,values_only,17,True
+2025,2026,2025→2026,Uniwersytet Bielsko-Bialski,3,19,weights_only,19,True
+2025,2026,2025→2026,Uniwersytet Radomski,1,22,full,22,True
+2025,2026,2025→2026,Uniwersytet Radomski,1,22,values_only,22,True
+2025,2026,2025→2026,Uniwersytet Radomski,1,22,weights_only,22,True
+2025,2026,2025→2026,Uniwersytet Radomski,2,21,full,19,True
+2025,2026,2025→2026,Uniwersytet Radomski,2,21,values_only,19,True
+2025,2026,2025→2026,Uniwersytet Radomski,2,21,weights_only,21,True
+2025,2026,2025→2026,Uniwersytet Radomski,3,20,full,18,True
+2025,2026,2025→2026,Uniwersytet Radomski,3,20,values_only,18,True
+2025,2026,2025→2026,Uniwersytet Radomski,3,20,weights_only,20,True

@@ -54,7 +54,7 @@ In the following sections, we will demonstrate how to use the PFA framework to i
 
 ```python
 import pandas as pd
-from WMSDTransformer import FuzzyTOPSIS
+from wmsd import FuzzyTOPSIS
 
 fuzzy_dataset = pd.DataFrame(
     {
@@ -87,7 +87,7 @@ To explain how the library works, we will use a dataset that contains informatio
 
 ```python
 import pandas as pd
-from src.WMSDTransformer import WMSDTransformer
+from wmsd import WMSDTransformer
 
 dataset = pd.read_csv("sez.csv", index_col=0)
 preference_directions = ["cost", "cost", "gain", "gain", "gain"]

@@ -1,0 +1,55 @@
+\begin{table}[htbp]
+\centering
+\caption{Post-factum algorithm timing benchmark; runtime is median (IQR) ms}
+\label{tab:e4-benchmark}
+\begin{tabular}{llrlrlr}
+\toprule
+algorithm & method & n\_criteria & status & n\_solutions & time\_ms & mean\_score\_excess \\
+\midrule
+direct & RTOPSIS & 1 & ok & 200 & 16.37 (2.99) & 0.00 \\
+lexicographic & RTOPSIS & 2 & ok & 200 & 20.60 (3.57) & 0.00 \\
+lexicographic & SAW & 2 & ok & 200 & 17.05 (3.82) & 0.00 \\
+lexicographic & VIKOR & 2 & ok & 200 & 42.18 (8.37) & 0.00 \\
+lexicographic & COPRAS & 2 & ok & 200 & 18.54 (3.65) & 0.00 \\
+lexicographic & ARAS & 2 & ok & 200 & 17.81 (3.65) & 0.00 \\
+lexicographic & WASPAS & 2 & ok & 200 & 17.85 (3.31) & 0.00 \\
+lexicographic & RTOPSIS & 4 & ok & 200 & 20.21 (3.82) & 0.00 \\
+lexicographic & SAW & 4 & ok & 200 & 17.05 (3.43) & 0.00 \\
+lexicographic & VIKOR & 4 & ok & 200 & 42.44 (7.19) & 0.00 \\
+lexicographic & COPRAS & 4 & ok & 200 & 17.83 (3.55) & 0.00 \\
+lexicographic & ARAS & 4 & ok & 200 & 17.49 (3.50) & 0.00 \\
+lexicographic & WASPAS & 4 & ok & 200 & 17.17 (3.91) & 0.00 \\
+lexicographic & RTOPSIS & 7 & ok & 200 & 20.93 (4.02) & 0.00 \\
+lexicographic & SAW & 7 & ok & 200 & 17.22 (3.42) & 0.00 \\
+lexicographic & VIKOR & 7 & ok & 200 & 36.94 (4.62) & 0.00 \\
+lexicographic & COPRAS & 7 & ok & 200 & 18.69 (4.48) & 0.00 \\
+lexicographic & ARAS & 7 & ok & 200 & 19.24 (5.04) & 0.00 \\
+lexicographic & WASPAS & 7 & ok & 200 & 19.81 (3.79) & 0.00 \\
+nlp & RTOPSIS & 2 & ok & 200 & 103.54 (12.62) & 0.00 \\
+nlp & SAW & 2 & ok & 200 & 90.18 (10.17) & 0.00 \\
+nlp & VIKOR & 2 & ok & 200 & 95.95 (9.82) & 0.00 \\
+nlp & COPRAS & 2 & ok & 200 & 88.71 (9.19) & 0.00 \\
+nlp & ARAS & 2 & ok & 200 & 81.85 (11.08) & 0.00 \\
+nlp & WASPAS & 2 & ok & 200 & 86.56 (10.58) & 0.00 \\
+nlp & RTOPSIS & 4 & ok & 200 & 117.98 (11.30) & 0.00 \\
+nlp & SAW & 4 & ok & 200 & 90.56 (9.38) & 0.00 \\
+nlp & VIKOR & 4 & ok & 200 & 99.77 (10.85) & 0.00 \\
+nlp & COPRAS & 4 & ok & 200 & 94.18 (10.78) & 0.00 \\
+nlp & ARAS & 4 & ok & 200 & 93.93 (8.97) & 0.00 \\
+nlp & WASPAS & 4 & ok & 200 & 86.67 (10.55) & 0.00 \\
+nlp & RTOPSIS & 7 & ok & 200 & 116.35 (10.67) & 0.00 \\
+nlp & SAW & 7 & ok & 200 & 98.40 (9.49) & 0.00 \\
+nlp & VIKOR & 7 & ok & 200 & 109.62 (9.80) & 0.00 \\
+nlp & COPRAS & 7 & ok & 200 & 99.74 (8.45) & 0.00 \\
+nlp & ARAS & 7 & ok & 200 & 100.50 (8.62) & 0.00 \\
+nlp & WASPAS & 7 & ok & 200 & 103.78 (8.83) & 0.00 \\
+evolutionary & RTOPSIS & 2 & ok & 30 & 60208.64 (1947.60) & 0.00 \\
+evolutionary & SAW & 2 & ok & 30 & 56659.07 (607.21) & 0.00 \\
+evolutionary & VIKOR & 2 & ok & 30 & 58082.68 (19096.48) & 0.00 \\
+evolutionary & COPRAS & 2 & ok & 30 & 58898.02 (2090.56) & 0.00 \\
+evolutionary & ARAS & 2 & ok & 30 & 59772.05 (359.61) & 0.00 \\
+evolutionary & WASPAS & 2 & ok & 30 & 59668.76 (165.94) & 0.00 \\
+wm & RTOPSIS & 7 & ok & 200 & 1090.84 (44.64) & 0.00 \\
+\bottomrule
+\end{tabular}
+\end{table}

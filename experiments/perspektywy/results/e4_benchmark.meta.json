@@ -1,0 +1,35 @@
+{
+  "config": {
+    "e4_repetitions_evolutionary": 30,
+    "evolutionary_generations": 200,
+    "evolutionary_methods": [
+      "RTOPSIS",
+      "SAW",
+      "VIKOR",
+      "COPRAS",
+      "ARAS",
+      "WASPAS"
+    ],
+    "evolutionary_popsize": 1000,
+    "focal": "Politechnika Poznanska",
+    "methods": [
+      "RTOPSIS",
+      "SAW",
+      "VIKOR",
+      "COPRAS",
+      "ARAS",
+      "WASPAS"
+    ],
+    "quick": false,
+    "repetitions": 200,
+    "year": 2025
+  },
+  "git_commit": "97a2a6e0136dac7ad970a12a76b3990059c5d6f0",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+  "python": "3.12.7 | packaged by conda-forge | (main, Oct  4 2024, 15:47:54) [MSC v.1941 64 bit (AMD64)]",
+  "script": "D:\\Praca\\Uczelnia\\Praca naukowa\\Github\\improvement-actions\\topsis-msd-improvement-actions\\experiments\\perspektywy\\e4_benchmark.py",
+  "timestamp": "2026-07-16T12:55:57.284376+00:00",
+  "timing_outliers": {},
+  "unsupported_combinations": []
+}

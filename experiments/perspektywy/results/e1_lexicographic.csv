@@ -1,0 +1,7 @@
+ordering,target_rank,feasible,norm,Prestiz,Absolwenci,PotencjalNaukowy,Innowacyjnosc,EfektywnoscNaukowa,WarunkiKsztalcenia,Umiedzynarodowienie
+Umiedzynarodowienie → Innowacyjnosc → EfektywnoscNaukowa,4,True,0.10144504636566609,0.0,0.0,0.0,0.0,0.0,0.0,10.144504636566609
+Umiedzynarodowienie → Innowacyjnosc → EfektywnoscNaukowa,3,True,0.43016414516377766,0.0,0.0,0.0,2.866360348030117,6.239184739163139,0.0,42.464908689300984
+Umiedzynarodowienie → Innowacyjnosc → EfektywnoscNaukowa,2,True,0.4355452201640074,0.0,0.0,0.0,2.866360348030117,9.247264267971733,0.0,42.464908689300984
+EfektywnoscNaukowa → Innowacyjnosc → Umiedzynarodowienie,4,True,0.029636949320342332,0.0,0.0,0.0,0.0,2.963694932034233,0.0,0.0
+EfektywnoscNaukowa → Innowacyjnosc → Umiedzynarodowienie,3,True,0.18475016953518608,0.0,0.0,0.0,0.0,18.475016953518608,0.0,0.0
+EfektywnoscNaukowa → Innowacyjnosc → Umiedzynarodowienie,2,True,0.2329564988808892,0.0,0.0,0.0,0.0,23.29564988808892,0.0,0.0
